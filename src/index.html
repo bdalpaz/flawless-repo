@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mortal Kombat Lore | Warriors of Outworld</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Roboto:wght@300;400;700&display=swap');
+        
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #0a0a0a;
+            color: #e0e0e0;
+        }
+        
+        .orbitron {
+            font-family: 'Orbitron', sans-serif;
+        }
+        
+        .blood-text {
+            text-shadow: 0 0 5px #ff0000, 0 0 10px #ff0000;
+        }
+        
+        .character-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(255, 0, 0, 0.3);
+        }
+        
+        .fatalities-btn:hover {
+            animation: pulse 1s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        .clan-lin-kuei {
+            border-color: #00a8ff;
+        }
+        
+        .clan-white-lotus {
+            border-color: #f1c40f;
+        }
+        
+        .clan-black-dragon {
+            border-color: #e74c3c;
+        }
+        
+        .clan-special-forces {
+            border-color: #2ecc71;
+        } 
+        
+        .clan-outworld {
+            border-color: #9b59b6;
+        }
+    </style>
+</head>
+<body class="min-h-screen">
+    <!-- Blood Splatter Decoration -->
+    <div class="fixed top-0 left-0 w-full h-full opacity-10 pointer-events-none" style="background-image: url('https://www.transparenttextures.com/patterns/blood.png'); z-index: -1;"></div>
+    
+    <!-- Header -->
+    <header class="bg-black bg-opacity-90 border-b-4 border-red-900 sticky top-0 z-50">
+        <div class="container mx-auto px-4 py-6">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="flex items-center mb-4 md:mb-0">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2b/Mortal_Kombat_logo.svg/1200px-Mortal_Kombat_logo.svg.png" alt="Mortal Kombat Logo" class="h-12 mr-4">
+                    <h1 class="orbitron text-3xl font-bold text-red-600 blood-text">MORTAL KOMBAT LORE</h1>
+                </div>
+                <nav class="flex space-x-1 md:space-x-6">
+                    <a href="#characters" class="orbitron px-3 py-2 text-red-500 hover:text-white hover:bg-red-900 rounded transition">LUTADORES</a>
+                    <a href="#clans" class="orbitron px-3 py-2 text-red-500 hover:text-white hover:bg-red-900 rounded transition">CLANS</a>
+                    <a href="#timeline" class="orbitron px-3 py-2 text-red-500 hover:text-white hover:bg-red-900 rounded transition">LINHA DO TEMPO</a>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="relative h-96 md:h-screen max-h-screen flex items-center justify-center bg-black overflow-hidden">
+        <video autoplay muted loop class="absolute w-full h-full object-cover opacity-70">
+            <source src="https://assets.mixkit.co/videos/preview/mixkit-red-and-yellow-lights-abstract-background-39858-large.mp4" type="video/mp4">
+        </video>
+        <div class="relative z-10 text-center px-4">
+            <h2 class="orbitron text-4xl md:text-7xl font-bold text-white mb-6 blood-text">KOMBAT ZONE</h2>
+            <p class="text-xl md:text-2xl text-gray-300 max-w-3xl mx-auto">Explore a história sangrenta, rivalidades e habilidades mortais dos defensores de Earthrealm e dos conquistadores de Outworld</p>
+            <button class="orbitron mt-8 px-8 py-4 bg-red-700 hover:bg-red-800 text-white font-bold rounded-lg fatalities-btn transition">
+                FATALITIES HISTÓRICAS <i class="fas fa-skull ml-2"></i>
+            </button>
+        </div>
+    </section>
+
+    <!-- Characters Section -->
+    <section id="characters" class="py-16 bg-gradient-to-b from-black to-gray-900">
+        <div class="container mx-auto px-4">
+            <h2 class="orbitron text-4xl font-bold text-center text-red-600 mb-16 blood-text"> LUTADORES </h2>
+            
+            <!-- Character Filter -->
+            <div class="flex flex-wrap justify-center mb-12 gap-4">
+                <button class="px-4 py-2 bg-red-900 text-white rounded-lg orbitron" data-filter="all">Todos</button>
+                <button class="px-4 py-2 bg-gray-800 hover:bg-gray-700 text-white rounded-lg orbitron" data-filter="earthrealm">Terra</button>
+                <button class="px-4 py-2 bg-gray-800 hover:bg-gray-700 text-white rounded-lg orbitron" data-filter="outworld">Exoterra</button>
+                <button class="px-4 py-2 bg-gray-800 hover:bg-gray-700 text-white rounded-lg orbitron" data-filter="netherrealm">Submundo</button>
+            </div>
+            
+            <!-- Character Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Scorpion -->
+                <div class="character-card bg-gray-900 rounded-lg overflow-hidden border-l-4 border-red-600 transition duration-300" data-realm="netherrealm">
+                    <div class="relative h-64 overflow-hidden">
+                        <img src="https://i.imgur.com/JzFQ0Xj.jpg" alt="Scorpion" class="w-full h-full object-cover">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black to-transparent"></div>
+                        <div class="absolute bottom-0 left-0 p-4">
+                            <h3 class="orbitron text-2xl font-bold text-white">SCORPION</h3>
+                            <p class="text-red-400">Hanzo Hasashi</p>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-center mb-4">
+                            <span class="bg-red-900 text-white px-3 py-1 rounded-full text-sm orbitron">SPECTRE</span>
+                            <span class="ml-2 bg-gray-800 text-white px-3 py-1 rounded-full text-sm orbitron">LIN KUEI</span>
+                        </div>
+                        <p class="text-gray-300 mb-4">Once a mortal warrior named Hanzo Hasashi, Scorpion was resurrected as a hellspawned spectre seeking vengeance against Sub-Zero for the murder of his family and clan.</p>
+                        <div class="mb-4">
+                            <h4 class="orbitron text-lg text-red-500 mb-2">ABILITIES</h4>
+                            <ul class="grid grid-cols-2 gap-2">
+                                <li class="flex items-center"><i class="fas fa-fire text-red-500 mr-2"></i> Hellfire</li>
+                                <li class="flex items-center"><i class="fas fa-ghost text-purple-500 mr-2"></i> Teleport</li>
+                                <li class="flex items-center"><i class="fas fa-skull text-white mr-2"></i> Spear Attack</li>
+                                <li class="flex items-center"><i class="fas fa-swords text-gray-400 mr-2"></i> Kunai</li>
+                            </ul>
+                        </div>
+                        <div class="mb-4">
+                            <h4 class="orbitron text-lg text-red-500 mb-2">RIVALS</h4>
+                            <div class="flex space-x-2">
+                                <span class="bg-gray-800 px-3 py-1 rounded-full text-sm">Sub-Zero</span>
+                                <span class="bg-gray-800 px-3 py-1 rounded-full text-sm">Quan Chi</span>
+                            </div>
+                        </div>
+                        <button class="w-full mt-4 py-2 bg-gray-800 hover:bg-gray-700 text-white rounded-lg orbitron transition">
+                            FULL BIO <i class="fas fa-chevron-right ml-2"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Sub-Zero -->
+                <div class="character-card bg-gray-900 rounded-lg overflow-hidden border-l-4 border-blue-500 transition duration-300" data-realm="earthrealm">
+                    <div class="relative h-64 overflow-hidden">
+                        <img src="https://i.imgur.com/8QZQ2Zr.jpg" alt="Sub-Zero" class="w-full h-full object-cover">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black to-transparent"></div>
+                        <div class="absolute bottom-0 left-0 p-4">
+                            <h3 class="orbitron text-2xl font-bold text-white">SUB-ZERO</h3>
+                            <p class="text-blue-400">Kuai Liang</p>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-center mb-4">
+                            <span class="bg-blue-900 text-white px-3 py-1 rounded-full text-sm orbitron">CRYOMANCER</span>
+                            <span class="ml-2 bg-gray-800 text-white px-3 py-1 rounded-full text-sm orbitron">LIN KUEI</span>
+                        </div>
+                        <p class="text-gray-300 mb-4">The younger brother of the original Sub-Zero, Kuai Liang took up the mantle after his brother's death. Grandmaster of the Lin Kuei and defender of Earthrealm.</p>
+                        <div class="mb-4">
+                            <h4 class="orbitron text-lg text-blue-500 mb-2">ABILITIES</h4>
+                            <ul class="grid grid-cols-2 gap-2">
+                                <li class="flex items-center"><i class="fas fa-snowflake text-blue-300 mr-2"></i> Ice Blast</li>
+                                <li class="flex items-center"><i class="fas fa-icicles text-blue-100 mr-2"></i> Ice Clone</li>
+                                <li class="flex items-center"><i class="fas fa-hammer text-gray-300 mr-2"></i> Ice Hammer</li>
+                                <li class="flex items-center"><i class="fas fa-running text-white mr-2"></i> Slide</li>
+                            </ul>
+                        </div>
+                        <div class="mb-4">
+                            <h4 class="orbitron text-lg text-blue-500 mb-2">RIVALS</h4>
+                            <div class="flex space-x-2">
+                                <span class="bg-gray-800 px-3 py-1 rounded-full text-sm">Scorpion</span>
+                                <span class="bg-gray-800 px-3 py-1 rounded-full text-sm">Sektor</span>
+                            </div>
+                        </div>
+                        <button class="w-full mt-4 py-2 bg-gray-800 hover:bg-gray-700 text-white rounded-lg orbitron transition">
+                            FULL BIO <i class="fas fa-chevron-right ml-2"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Liu Kang -->
+                <div class="character-card bg-gray-900 rounded-lg overflow-hidden border-l-4 border-yellow-500 transition duration-300" data-realm="earthrealm">
+                    <div class="relative h-64 overflow-hidden">
+                        <img src="https://i.imgur.com/3tJQY9x.jpg" alt="Liu Kang" class="w-full h-full object-cover">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black to-transparent"></div>
+                        <div class="absolute bottom-0 left-0 p-4">
+                            <h3 class="orbitron text-2xl font-bold text-white">LIU KANG</h3>
+                            <p class="text-yellow-400">Champion of Earthrealm</p>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-center mb-4">
+                            <span class="bg-yellow-900 text-white px-3 py-1 rounded-full text-sm orbitron">MONK</span>
+                            <span class="ml-2 bg-gray-800 text-white px-3 py-1 rounded-full text-sm orbitron">WHITE LOTUS</span>
+                        </div>
+                        <p class="text-gray-300 mb-4">The reigning champion of Mortal Kombat and protector of Earthrealm. Trained by the White Lotus Society, Liu Kang combines his Shaolin training with the power of the dragon.</p>
+                        <div class="mb-4">
+                            <h4 class="orbitron text-lg text-yellow-500 mb-2">ABILITIES</h4>
+                            <ul class="grid grid-cols-2 gap-2">
+                                <li class="flex items-center"><i class="fas fa-fire text-red-500 mr-2"></i> Dragon Fire</li>
+                                <li class="flex items-center"><i class="fas fa-khanda text-yellow-300 mr-2"></i> Flying Kick</li>
+                                <li class="flex items-center"><i class="fas fa-fist-raised text-white mr-2"></i> Bicycle Kick</li>
+                                <li class="flex items-center"><i class="fas fa-dragon text-orange-500 mr-2"></i> Dragon Form</li>
+                            </ul>
+                        </div>
+                        <div class="mb-4">
+                            <h4 class="orbitron text-lg text-yellow-500 mb-2">RIVALS</h4>
+                            <div class="flex space-x-2">
+                                <span class="bg-gray-800 px-3 py-1 rounded-full text-sm">Shang Tsung</span>
+                                <span class="bg-gray-800 px-3 py-1 rounded-full text-sm">Shao Kahn</span>
+                                <span class="bg-gray-800 px-3 py-1 rounded-full text-sm">Raiden</span>
+                            </div>
+                        </div>
+                        <button class="w-full mt-4 py-2 bg-gray-800 hover:bg-gray-700 text-white rounded-lg orbitron transition">
+                            FULL BIO <i class="fas fa-chevron-right ml-2"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- More characters would follow the same pattern -->
+            </div>
+            
+            <div class="text-center mt-12">
+                <button class="orbitron px-8 py-3 bg-gray-800 hover:bg-gray-700 text-white rounded-lg transition">
+                    VER TODOS OS 37 LUTADORES <i class="fas fa-chevron-down ml-2"></i>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Clans Section -->
+    <section id="clans" class="py-16 bg-gray-900">
+        <div class="container mx-auto px-4">
+            <h2 class="orbitron text-4xl font-bold text-center text-red-600 mb-16 blood-text">THE CLANS</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Lin Kuei -->
+                <div class="bg-gray-800 rounded-lg overflow-hidden border-t-4 clan-lin-kuei">
+                    <div class="p-6">
+                        <div class="flex items-center mb-4">
+                            <div class="w-12 h-12 bg-blue-900 rounded-full flex items-center justify-center mr-4">
+                                <i class="fas fa-snowflake text-blue-300 text-xl"></i>
+                            </div>
+                            <h3 class="orbitron text-2xl text-white">LIN KUEI</h3>
+                        </div>
+                        <p class="text-gray-300 mb-4">An ancient clan of assassins from China. Originally noble warriors, they became corrupted and began cyberizing their members. Now led by Sub-Zero who seeks to restore their honor.</p>
+                        <div class="mb-4">
+                            <h4 class="orbitron text-lg text-blue-400 mb-2">NOTABLE MEMBERS</h4>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="bg-blue-900 bg-opacity-50 px-3 py-1 rounded-full text-sm">Sub-Zero</span>
+                                <span class="bg-blue-900 bg-opacity-50 px-3 py-1 rounded-full text-sm">Smoke</span>
+                                <span class="bg-blue-900 bg-opacity-50 px-3 py-1 rounded-full text-sm">Cyrax</span>
+                                <span class="bg-blue-900 bg-opacity-50 px-3 py-1 rounded-full text-sm">Sektor</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- White Lotus -->
+                <div class="bg-gray-800 rounded-lg overflow-hidden border-t-4 clan-white-lotus">
+                    <div class="p-6">
+                        <div class="flex items-center mb-4">
+                            <div class="w-12 h-12 bg-yellow-900 rounded-full flex items-center justify-center mr-4">
+                                <i class="fas fa-yin-yang text-yellow-300 text-xl"></i>
+                            </div>
+                            <h3 class="orbitron text-2xl text-white">WHITE LOTUS</h3>
+                        </div>
+                        <p class="text-gray-300 mb-4">A secret society dedicated to protecting Earthrealm through spiritual enlightenment and martial arts mastery. They train the finest warriors to defend against Outworld threats.</p>
+                        <div class="mb-4">
+                            <h4 class="orbitron text-lg text-yellow-400 mb-2">NOTABLE MEMBERS</h4>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="bg-yellow-900 bg-opacity-50 px-3 py-1 rounded-full text-sm">Liu Kang</span>
+                                <span class="bg-yellow-900 bg-opacity-50 px-3 py-1 rounded-full text-sm">Kung Lao</span>
+                                <span class="bg-yellow-900 bg-opacity-50 px-3 py-1 rounded-full text-sm">Bo' Rai Cho</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Black Dragon -->
+                <div class="bg-gray-800 rounded-lg overflow-hidden border-t-4 clan-black-dragon">
+                    <div class="p-6">
+                        <div class="flex items-center mb-4">
+                            <div class="w-12 h-12 bg-red-900 rounded-full flex items-center justify-center mr-4">
+                                <i class="fas fa-skull text-red-300 text-xl"></i>
+                            </div>
+                            <h3 class="orbitron text-2xl text-white">BLACK DRAGON</h3>
+                        </div>
+                        <p class="text-gray-300 mb-4">A ruthless criminal organization that deals in weapons smuggling, assassination, and mercenary work. They value profit over all else and have no loyalty except to themselves.</p>
+                        <div class="mb-4">
+                            <h4 class="orbitron text-lg text-red-400 mb-2">NOTABLE MEMBERS</h4>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="bg-red-900 bg-opacity-50 px-3 py-1 rounded-full text-sm">Kano</span>
+                                <span class="bg-red-900 bg-opacity-50 px-3 py-1 rounded-full text-sm">Kabal</span>
+                                <span class="bg-red-900 bg-opacity-50 px-3 py-1 rounded-full text-sm">Tremor</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- More clans would follow the same pattern -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Timeline Section -->
+    <section id="timeline" class="py-16 bg-black">
+        <div class="container mx-auto px-4">
+            <h2 class="orbitron text-4xl font-bold text-center text-red-600 mb-16 blood-text">MORTAL KOMBAT TIMELINE</h2>
+            
+            <div class="relative">
+                <!-- Timeline line -->
+                <div class="absolute left-1/2 h-full w-1 bg-red-900 transform -translate-x-1/2"></div>
+                
+                <!-- Timeline items -->
+                <div class="space-y-12">
+                    <!-- Item 1 -->
+                    <div class="relative flex items-center">
+                        <div class="absolute left-1/2 w-6 h-6 bg-red-600 rounded-full transform -translate-x-1/2"></div>
+                        <div class="w-1/2 pr-8 text-right">
+                            <h3 class="orbitron text-2xl text-red-500 mb-2">THE GREAT KUNG LAO</h3>
+                            <p class="text-gray-400">Ancient times</p>
+                            <p class="text-gray-300">The Great Kung Lao wins the Mortal Kombat tournament, defending Earthrealm from Outworld invasion for another generation.</p>
+                        </div>
+                        <div class="w-1/2 pl-8">
+                            <img src="https://i.imgur.com/5tJyQ7W.jpg" alt="The Great Kung Lao" class="rounded-lg shadow-lg">
+                        </div>
+                    </div>
+                    
+                    <!-- Item 2 -->
+                    <div class="relative flex items-center">
+                        <div class="absolute left-1/2 w-6 h-6 bg-red-600 rounded-full transform -translate-x-1/2"></div>
+                        <div class="w-1/2 pr-8 text-right order-last">
+                            <img src="https://i.imgur.com/8QZQ2Zr.jpg" alt="Original Mortal Kombat" class="rounded-lg shadow-lg">
+                        </div>
+                        <div class="w-1/2 pl-8">
+                            <h3 class="orbitron text-2xl text-red-500 mb-2">ORIGINAL TOURNAMENT</h3>
+                            <p class="text-gray-400">1992</p>
+                            <p class="text-gray-300">Shang Tsung hosts the 10th consecutive Mortal Kombat tournament on his island, where Liu Kang emerges victorious.</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Item 3 -->
+                    <div class="relative flex items-center">
+                        <div class="absolute left-1/2 w-6 h-6 bg-red-600 rounded-full transform -translate-x-1/2"></div>
+                        <div class="w-1/2 pr-8 text-right">
+                            <h3 class="orbitron text-2xl text-red-500 mb-2">SHAO KAHN'S INVASION</h3>
+                            <p class="text-gray-400">1995</p>
+                            <p class="text-gray-300">After Shang Tsung's failure, Shao Kahn initiates an invasion of Earthrealm, merging the two worlds.</p>
+                        </div>
+                        <div class="w-1/2 pl-8">
+                            <img src="https://i.imgur.com/JzFQ0Xj.jpg" alt="Shao Kahn" class="rounded-lg shadow-lg">
+                        </div>
+                    </div>
+                    
+                    <!-- More timeline items would follow the same pattern -->
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-black bg-opacity-90 border-t-4 border-red-900 py-12">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-6 md:mb-0">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2b/Mortal_Kombat_logo.svg/1200px-Mortal_Kombat_logo.svg.png" alt="Mortal Kombat Logo" class="h-10">
+                    <p class="text-gray-500 mt-2">© 2025 Mortal Kombat Lore by Alice Dal Paz and Pauline Pavan</p>
+                </div>
+                <div class="flex space-x-6">
+                    <a href="#" class="text-gray-500 hover:text-red-600 text-xl"><i class="fab fa-twitter"></i></a>
+                    <a href="#" class="text-gray-500 hover:text-red-600 text-xl"><i class="fab fa-facebook"></i></a>
+                    <a href="#" class="text-gray-500 hover:text-red-600 text-xl"><i class="fab fa-instagram"></i></a>
+                    <a href="#" class="text-gray-500 hover:text-red-600 text-xl"><i class="fab fa-youtube"></i></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Simple filter functionality
+        document.querySelectorAll('[data-filter]').forEach(button => {
+            button.addEventListener('click', function() {
+                const filter = this.getAttribute('data-filter');
+                
+                document.querySelectorAll('.character-card').forEach(card => {
+                    if (filter === 'all' || card.getAttribute('data-realm') === filter) {
+                        card.style.display = 'block';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+                
+                // Update active button
+                document.querySelectorAll('[data-filter]').forEach(btn => {
+                    btn.classList.remove('bg-red-900');
+                    btn.classList.add('bg-gray-800');
+                });
+                this.classList.remove('bg-gray-800');
+                this.classList.add('bg-red-900');
+            });
+        });
+        
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+</body>
+</html>
