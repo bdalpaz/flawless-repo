@@ -10,7 +10,7 @@ CORS(app) # Habilita o CORS para permitir requisições do frontend
 DB_HOST = "localhost"
 DB_NAME = "mortal_kombat_db"
 DB_USER = "postgres"
-DB_PASS = "sua_senha_do_postgres" # <--- Mude AQUI!
+DB_PASS = "postgres" # <--- Mude AQUI!
 
 # Função para conectar ao banco de dados
 def get_db_connection():
