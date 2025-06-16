@@ -16,6 +16,6 @@ Este é um projeto web interativo sobre o universo de Mortal Kombat com informa�
 
 * [Alice Botton Dal Paz]
 
-* ## 🧑‍💻 Modelagem 
+## 🧑‍💻 Modelagem 
 
 * [Pauline Antônia Pavan]
