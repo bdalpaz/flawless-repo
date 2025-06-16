@@ -1,64 +1,181 @@
-// Mapeamento de imagens de personagens (pois você não as tem no banco de dados)
 const characterImages = {
-    "Scorpion": "https://www.fightersgeneration.com/nf7/char/scorpion-mk11-render.png",
-    "Sub-Zero": "https://www.fightersgeneration.com/nf7/char/subzero-mk11-render.png",
-    "Liu Kang": "https://www.fightersgeneration.com/nf7/char/liu-kang-mk11-render.png",
-    "Raiden": "https://www.fightersgeneration.com/nf7/char/raiden-mk11-render.png",
-    "Johnny Cage": "https://www.fightersgeneration.com/nf7/char/johnny-cage-mk11-render.png",
-    "Sonya Blade": "https://www.fightersgeneration.com/nf7/char/sonya-blade-mk11-render.png",
-    "Kitana": "https://www.fightersgeneration.com/nf7/char/kitana-mk11-render.png",
-    "Jax Briggs": "https://www.fightersgeneration.com/nf7/char/jax-mk11-render.png",
-    "Mileena": "https://www.fightersgeneration.com/nf7/char/mileena-mk11-render.png",
-    // Adicione mais mapeamentos para os 48 personagens conforme necessário
-    // Ex: "Kano": "URL_DA_IMAGEM_KANO.png",
-    // ...
+    "Scorpion": "assets/images/personagens/scorpion.png",
+    "Sub-Zero": "assets/images/personagens/subzero.png",
+    "Liu Kang": "assets/images/personagens/liukang.png",
+    "Raiden": "assets/images/personagens/raiden.png",
+    "Johnny Cage": "assets/images/personagens/johnnycage.png",
+    "Sonya Blade": "assets/images/personagens/sonya.png",
+    "Kitana": "assets/images/personagens/kitana.png",
+    "Jax Briggs": "assets/images/personagens/jax.png",
+    "Mileena": "assets/images/personagens/mileena.png",
+    "Kano": "assets/images/personagens/kano.png",
+    "Baraka": "assets/images/personagens/barakac.png",
+    "Shang Tsung": "assets/images/personagens/shang.png",
+    "Shao Kahn": "assets/images/personagens/shao.png",
+    "Ermac": "assets/images/personagens/emerc.png",
+    "Reptile": "assets/images/personagens/reptile.png",
+    "Smoke": "assets/images/personagens/smoke.png",
+    "Noob Saibot": "assets/images/personagens/noob.png",
+    "Goro": "assets/images/personagens/goro.png",
+    "Kintaro": "assets/images/personagens/kintaro.png",
+    "Motaro": "assets/images/personagens/motaro.png",
+    "Bo' Rai Cho": "assets/images/personagens/boraicho.png",
+    "Cassie Cage": "assets/images/personagens/cassiecage.png",
+    "Cetrion": "assets/images/personagens/cetrion.png",
+    "Cyrax": "assets/images/personagens/cyrax.png",
+    "D'Vorah": "assets/images/personagens/dvorah.png",
+    "Erron Black": "assets/images/personagens/erron.png",
+    "Fujin": "assets/images/personagens/fujin.png",
+    "Geras": "assets/images/personagens/geras.png",
+    "Jacqui Briggs": "assets/images/personagens/jacqui.png",
+    "Jade": "assets/images/personagens/jade.png",
+    "Kabal": "assets/images/personagens/kabal.png",
+    "Kenshi": "assets/images/personagens/kenshi.png",
+    "Kollector": "assets/images/personagens/kollector.png",
+    "Kotal Kahn": "assets/images/personagens/kotal.png",
+    "Kung Lao": "assets/images/personagens/kunglao.png",
+    "Nightwolf": "assets/images/personagens/nightwolf.png",
+    "Onaga": "assets/images/personagens/onaga.png",
+    "Quan Chi": "assets/images/personagens/quanchi.png",
+    "Rain": "assets/images/personagens/rain.png",
+    "Sektor": "assets/images/personagens/sektor.png",
+    "Sheeva": "assets/images/personagens/sheeva.png",
+    "Shinnok": "assets/images/personagens/shinnok.png",
+    "Shujinko": "assets/images/personagens/shujinco.webp",
+    "Sindel": "assets/images/personagens/sindel.png",
+    "Skarlet": "assets/images/personagens/skarlet.png",
+    "Stryker": "assets/images/personagens/stryker.png",
+    "Takeda Takahashi": "assets/images/personagens/takeda.png",
+    "Tanya": "assets/images/personagens/tanya.png",
+    "Triborg": "assets/images/personagens/triborg.png",
 };
 
-// Mapeamento de imagens dos jogos (baseado nos títulos, ou você pode adicionar URLs no banco)
+// Mapeamento de imagens dos jogos (local)
 const gameImages = {
-    "Mortal Kombat": "https://upload.wikimedia.org/wikipedia/en/thumb/2/2b/Mortal_Kombat_Logo.png/220px-Mortal_Kombat_Logo.png",
-    "Mortal Kombat II": "https://upload.wikimedia.org/wikipedia/en/thumb/5/5d/Mortal_Kombat_II_cover.jpg/220px-Mortal_Kombat_II_cover.jpg",
-    "Mortal Kombat 3": "https://upload.wikimedia.org/wikipedia/en/a/a2/Mortal_Kombat_3_Cover.png",
-    "Ultimate Mortal Kombat 3": "https://upload.wikimedia.org/wikipedia/en/4/4b/Ultimate_Mortal_Kombat_3_cover.jpg",
-    "Mortal Kombat Trilogy": "https://upload.wikimedia.org/wikipedia/en/e/e0/Mortal_Kombat_Trilogy_cover.jpg",
-    "Mortal Kombat 4": "https://upload.wikimedia.org/wikipedia/en/a/a4/Mortal_Kombat_4_cover.jpg",
-    "Mortal Kombat: Deadly Alliance": "https://upload.wikimedia.org/wikipedia/en/9/91/Mortal_Kombat_Deadly_Alliance_cover_art.jpg",
-    "Mortal Kombat: Deception": "https://upload.wikimedia.org/wikipedia/en/1/18/Mortal_Kombat_Deception_cover_art.jpg",
-    "Mortal Kombat: Armageddon": "https://upload.wikimedia.org/wikipedia/en/e/e7/Mortal_Kombat_Armageddon_cover_art.jpg",
-    "Mortal Kombat vs DC Universe": "https://upload.wikimedia.org/wikipedia/en/6/6b/Mortal_Kombat_vs_DC_Universe_cover_art.jpg",
-    "Mortal Kombat (MK9)": "https://upload.wikimedia.org/wikipedia/en/9/9e/Mortal_Kombat_%282011%29_cover_art.jpg",
-    "Mortal Kombat X": "https://upload.wikimedia.org/wikipedia/en/a/ad/Mortal_Kombat_X_cover_art.png",
-    "Mortal Kombat 11": "https://upload.wikimedia.org/wikipedia/en/thumb/a/a0/Mortal_Kombat_11_cover_art.png/220px-Mortal_Kombat_11_cover_art.png",
-    "Mortal Kombat 1 (MK1)": "https://assets-prd.ignimgs.com/2023/05/18/mortalkombat1-button-1684436067654.jpg",
+    "Mortal Kombat": "assets/images/jogos/mortal-kombat.png", // Supondo nomes de arquivo padronizados
+    "Mortal Kombat II": "assets/images/jogos/mortal-kombat-ii.png",
+    "Mortal Kombat 3": "assets/images/jogos/mortal-kombat-3.png",
+    "Ultimate Mortal Kombat 3": "assets/images/jogos/umk3.png", // Nome mais curto
+    "Mortal Kombat Trilogy": "assets/images/jogos/mortal-kombat-trilogy.png",
+    "Mortal Kombat 4": "assets/images/jogos/mortal-kombat-4.png",
+    "Mortal Kombat: Deadly Alliance": "assets/images/jogos/deadly-alliance.png",
+    "Mortal Kombat: Deception": "assets/images/jogos/deception.png",
+    "Mortal Kombat: Armageddon": "assets/images/jogos/armageddon.png",
+    "Mortal Kombat vs DC Universe": "assets/images/jogos/mk-vs-dc.png",
+    "Mortal Kombat (MK9)": "assets/images/jogos/mk9.png",
+    "Mortal Kombat X": "assets/images/jogos/mkx.png",
+    "Mortal Kombat 11": "assets/images/jogos/mk11.png",
+    "Mortal Kombat 1 (MK1)": "assets/images/jogos/mk1.png", // Nome de arquivo simples
 };
+
+// Variáveis de estado para a paginação de personagens
+let currentOffset = 0;
+const limitPerPage = 8; // Quantos personagens carregar por vez
+
+// Elementos DOM para os personagens
+const charactersGrid = document.querySelector('#personagens .grid'); 
+const showMoreCharsButton = document.getElementById('showMoreChars');
+
+// Novas variáveis de estado para a paginação de fatalities
+let currentOffsetFatalities = 0;
+const limitPerPageFatalities = 3; // Quantos fatalities carregar por vez
+
+// Elementos DOM para os fatalities
+const fatalitiesLista = document.getElementById('fatalities-lista');
+const showMoreFatalitiesButton = document.getElementById('showMoreFatalities');
 
 
 document.addEventListener('DOMContentLoaded', function() {
-    // Carregar personagens na grid
-    carregarKombatants();
+    // Carregar os primeiros personagens ao carregar a página
+    carregarKombatants(true); 
     // Carregar jogos na timeline
     carregarJogosTimeline();
-    // Adicionar funcionalidade ao modal (já está no seu HTML)
+    // Carregar fatalities
+    carregarFatalities(true); 
+
     setupModal();
+
+    // Lógica para o efeito de digitação no título
+    const titleElement = document.querySelector('h1');
+    if (titleElement) {
+        const originalText = titleElement.textContent;
+        titleElement.textContent = '';
+        let i = 0;
+        const typingEffect = setInterval(() => {
+            if (i < originalText.length) {
+                titleElement.textContent += originalText.charAt(i);
+                i++;
+            } else {
+                clearInterval(typingEffect);
+            }
+        }, 100);
+    }
+
+    // Lógica para suavizar rolagem para âncoras
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            document.querySelector(this.getAttribute('href')).scrollIntoView({
+                behavior: 'smooth'
+            });
+        });
+    });
+
+    // Event Listener para o botão "Mostrar Mais Personagens"
+    if (showMoreCharsButton) { 
+        showMoreCharsButton.addEventListener('click', function() {
+            carregarKombatants(false); 
+        });
+    }
+
+    // Event Listener para o botão "Mostrar Mais Fatalities"
+    if (showMoreFatalitiesButton) {
+        showMoreFatalitiesButton.addEventListener('click', function() {
+            carregarFatalities(false);
+        });
+    }
 });
+
 
 // --- Funções de Carregamento de Dados ---
 
-async function carregarKombatants() {
-    const charactersGrid = document.querySelector('#characters .grid');
-    charactersGrid.innerHTML = '<p class="col-span-full text-center text-gray-400">Carregando Kombatants...</p>';
+async function carregarKombatants(isInitialLoad) {
+    if (isInitialLoad) {
+        currentOffset = 0; 
+        charactersGrid.innerHTML = '<p class="col-span-full text-center text-gray-400">Carregando Kombatants...</p>';
+        if (showMoreCharsButton) {
+            showMoreCharsButton.style.display = 'none'; 
+        }
+    } else {
+        if (showMoreCharsButton) {
+            showMoreCharsButton.disabled = true;
+            showMoreCharsButton.innerHTML = 'CARREGANDO... <i class="fas fa-spinner fa-spin ml-2"></i>';
+        }
+    }
 
     try {
-        const response = await fetch('http://127.0.0.1:5000/api/personagens'); // Nova rota da API
+        const response = await fetch(`http://127.0.0.1:5000/api/personagens?limit=${limitPerPage}&offset=${currentOffset}`);
         if (!response.ok) {
             throw new Error(`Erro ao buscar personagens: ${response.statusText}`);
         }
-        const personagens = await response.json();
+        const data = await response.json(); 
+        const personagens = data.personagens;
+        const totalPersonagens = data.total;
 
-        charactersGrid.innerHTML = ''; // Limpa o carregamento
+        if (isInitialLoad) {
+            charactersGrid.innerHTML = ''; 
+        }
 
-        if (personagens.length === 0) {
+        if (personagens.length === 0 && isInitialLoad) {
             charactersGrid.innerHTML = '<p class="col-span-full text-center text-gray-400">Nenhum personagem encontrado.</p>';
+            if (showMoreCharsButton) {
+                showMoreCharsButton.style.display = 'none'; 
+            }
+            return;
+        } else if (personagens.length === 0 && !isInitialLoad) {
+            if (showMoreCharsButton) {
+                showMoreCharsButton.style.display = 'none'; 
+            }
             return;
         }
 
@@ -66,44 +183,59 @@ async function carregarKombatants() {
             const card = document.createElement('div');
             card.className = 'character-card bg-gray-800 rounded-lg overflow-hidden border border-red-900 cursor-pointer transition duration-300';
             
-            // Usar o mapeamento de imagens ou um placeholder
-            const imageUrl = characterImages[personagem.nome] || 'https://via.placeholder.com/200x250/333/666?text=Image+Missing'; 
+            // Lógica para obter a URL da imagem (agora usando caminhos locais)
+            const imageUrl = characterImages[personagem.nome] || 'assets/images/placeholder-personagem.png'; // Fallback local
 
             card.innerHTML = `
                 <div class="h-48 md:h-56 overflow-hidden">
                     <img src="${imageUrl}" 
-                         alt="${personagem.nome}" 
-                         class="w-full h-full object-cover">
+                        alt="${personagem.nome}" 
+                        class="w-full h-full object-cover">
                 </div>
                 <div class="p-4">
                     <h3 class="text-xl font-bold blood-text">${personagem.nome}</h3>
-                    <p class="text-gray-400 text-sm mt-2">Raça: ${personagem.raca}</p>
-                    <p class="text-gray-400 text-sm">Status: ${personagem.status_vida}</p>
+                    ${personagem.habilidade_principal ? `<p class="text-red-400 text-sm mt-1 mb-2">Habilidade: ${personagem.habilidade_principal}</p>` : ''} 
+                    <p class="text-gray-400 text-sm mt-2">Raça: ${personagem.raca || 'N/A'}</p>
+                    <p class="text-gray-400 text-sm">Status: ${personagem.status_vida || 'N/A'}</p> 
                 </div>
             `;
-            // Passar o ID do personagem para openCharacterModal
             card.addEventListener('click', () => openCharacterModal(personagem.id));
             charactersGrid.appendChild(card);
         });
 
+        currentOffset += personagens.length;
+
+        if (showMoreCharsButton) { 
+            if (currentOffset < totalPersonagens) {
+                showMoreCharsButton.style.display = 'block'; 
+                showMoreCharsButton.disabled = false;
+                showMoreCharsButton.innerHTML = 'MOSTRAR MAIS PERSONAGENS <i class="fas fa-chevron-down ml-2"></i>';
+            } else {
+                showMoreCharsButton.style.display = 'none'; 
+            }
+        }
+
     } catch (error) {
         console.error('Erro ao carregar Kombatants:', error);
         charactersGrid.innerHTML = `<p class="col-span-full text-center text-red-500">Erro ao carregar personagens: ${error.message}</p>`;
+        if (showMoreCharsButton) {
+            showMoreCharsButton.style.display = 'none'; 
+        }
     }
 }
 
 async function carregarJogosTimeline() {
-    const timelineContainer = document.querySelector('#games .space-y-12'); // Seleciona o contêiner dos itens da timeline
+    const timelineContainer = document.querySelector('#jogos .space-y-12'); 
     timelineContainer.innerHTML = '<p class="col-span-full text-center text-gray-400">Carregando Linha do Tempo...</p>';
 
     try {
-        const response = await fetch('http://127.0.0.1:5000/api/jogos'); // Nova rota da API
+        const response = await fetch('http://127.0.0.1:5000/api/jogos'); 
         if (!response.ok) {
             throw new Error(`Erro ao buscar jogos: ${response.statusText}`);
         }
-        const jogos = await response.json();
-
-        timelineContainer.innerHTML = ''; // Limpa o carregamento
+        const jogos = await response.json(); 
+        
+        timelineContainer.innerHTML = ''; 
 
         if (jogos.length === 0) {
             timelineContainer.innerHTML = '<p class="col-span-full text-center text-gray-400">Nenhum jogo encontrado.</p>';
@@ -114,27 +246,21 @@ async function carregarJogosTimeline() {
             const itemDiv = document.createElement('div');
             itemDiv.classList.add('relative', 'md:flex', 'justify-between', 'items-center', 'mb-16', 'timeline-item');
 
-            // Determinar a ordem para alternar esquerda/direita
-            const isEven = index % 2 === 0; // Se o índice for par, o texto fica à direita
+            const isEven = index % 2 === 0; 
             
-            // Usar o mapeamento de imagens ou um placeholder
-            const imageUrl = gameImages[jogo.titulo] || 'https://via.placeholder.com/220x220/333/666?text=Jogo';
+            const imageUrl = gameImages[jogo.titulo] || 'assets/images/placeholder-jogo.png'; // Fallback local
 
             itemDiv.innerHTML = `
                 <div class="md:w-5/12 md:pr-8 ${isEven ? 'text-right' : 'order-last text-left'} mb-4 md:mb-0">
-                    <h3 class="text-2xl font-bold blood-text">${jogo.titulo} (${jogo.ano})</h3>
-                    <p class="text-gray-300">Plataformas: ${jogo.plataforma}</p>
-                    </div>
+                    <h3 class="text-2xl font-bold blood-text">${jogo.titulo} (${jogo.ano || 'N/A'})</h3>
+                    <p class="text-gray-300">Plataformas: ${jogo.plataforma || 'N/A'}</p>
+                </div>
                 <div class="hidden md:block w-2 h-2 rounded-full bg-red-600 mx-auto"></div>
                 <div class="md:w-5/12 md:pl-8 ${isEven ? '' : 'order-first'}">
-                    <img src="${imageUrl}" 
-                         alt="${jogo.titulo}" 
-                         class="w-full max-w-xs mx-auto rounded border border-red-900">
                 </div>
             `;
             timelineContainer.appendChild(itemDiv);
 
-            // Adiciona o círculo da timeline (que já está na sua CSS customizada)
             const circle = document.createElement('div');
             circle.className = 'hidden md:block w-3 h-3 rounded-full bg-red-600 absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2';
             itemDiv.appendChild(circle);
@@ -145,103 +271,234 @@ async function carregarJogosTimeline() {
         timelineContainer.innerHTML = `<p class="col-span-full text-center text-red-500">Erro ao carregar jogos: ${error.message}</p>`;
     }
 }
+    async function carregarFatalities(isInitialLoad) {
+     if (isInitialLoad) {
+         currentOffsetFatalities = 0;
+         fatalitiesLista.innerHTML = '<p class="col-span-full text-center text-gray-400">Carregando Fatalities...</p>';
+     if (showMoreFatalitiesButton) {
+         showMoreFatalitiesButton.style.display = 'none';
+     }
+     } else {
+    if (showMoreFatalitiesButton) {
+         showMoreFatalitiesButton.disabled = true;
+         showMoreFatalitiesButton.innerHTML = 'CARREGANDO... <i class="fas fa-spinner fa-spin ml-2"></i>';
+ }
+     }
+
+ try {
+     const response = await fetch(`http://127.0.0.1:5000/api/fatalities?limit=${limitPerPageFatalities}&offset=${currentOffsetFatalities}`);
+    if (!response.ok) {
+        throw new Error(`Erro ao buscar fatalities: ${response.statusText}`);
+}
+         const data = await response.json();
+         const fatalities = data.fatalities;
+         const totalFatalities = data.total;
+
+    if (isInitialLoad) {
+        fatalitiesLista.innerHTML = ''; 
+     }
+
+    if (fatalities.length === 0 && isInitialLoad) {
+         fatalitiesLista.innerHTML = '<p class="col-span-full text-center text-gray-400">Nenhum Fatality encontrado.</p>';
+     if (showMoreFatalitiesButton) {
+             showMoreFatalitiesButton.style.display = 'none';
+         }  
+         
+        return;
+    } else if (fatalities.length === 0 && !isInitialLoad) {
+             if (showMoreFatalitiesButton) {
+             showMoreFatalitiesButton.style.display = 'none';
+         }
+         return;
+     }
+
+    fatalities.forEach(fatality => {
+        const card = document.createElement('div');
+        card.className = 'bg-gray-600 rounded-lg p-6 shadow-lg border border-red-700'; // Estilo para o card de fatality
+             card.innerHTML = `
+            <h3 class="text-2xl font-bold blood-text mb-2">${fatality.nome || 'N/A'}</h3>
+                <p class="text-gray-300 text-sm">Tipo: ${fatality.tipo || 'N/A'}</p>
+                 <p class="text-gray-300 text-sm">Brutalidade: ${fatality.brutalidade || 'N/A'}</p>
+                 <p class="text-gray-300 text-sm">Origem: ${fatality.origem || 'N/A'}</p>
+             `;
+             fatalitiesLista.appendChild(card);
+        });
+
+    currentOffsetFatalities += fatalities.length;
+
+         if (showMoreFatalitiesButton) {
+             if (currentOffsetFatalities < totalFatalities) {
+                 showMoreFatalitiesButton.style.display = 'block';
+                showMoreFatalitiesButton.disabled = false;
+                 showMoreFatalitiesButton.innerHTML = 'MOSTRAR MAIS FATALITIES <i class="fas fa-chevron-down ml-2"></i>';
+             } else {
+             showMoreFatalitiesButton.style.display = 'none';
+             }
+         }
+
+    } catch (error) {
+         console.error('Erro ao carregar Fatalities:', error);
+         fatalitiesLista.innerHTML = `<p class="col-span-full text-center text-red-500">Erro ao carregar fatalities: ${error.message}</p>`;
+        if (showMoreFatalitiesButton) {
+         showMoreFatalitiesButton.style.display = 'none';
+     }
+    }
+}
 
 // --- Lógica do Modal de Personagem ---
 
 function setupModal() {
-    const modal = document.getElementById('characterModal');
-    const closeModalBtn = document.getElementById('closeModal');
+     const modal = document.getElementById('characterModal');
+     const closeModalBtn = document.getElementById('closeModal');
+     const modalContent = modal.querySelector('.modal-content');
 
     closeModalBtn.addEventListener('click', () => {
-        modal.classList.add('hidden');
+    modalContent.classList.remove('scale-100', 'opacity-100');
+    modalContent.classList.add('scale-95', 'opacity-0');
+     setTimeout(() => modal.classList.add('hidden'), 300); 
     });
 
-    modal.addEventListener('click', (e) => {
-        if (e.target === modal) {
-            modal.classList.add('hidden');
-        }
+     modal.addEventListener('click', (e) => {
+         if (e.target === modal) {
+            modalContent.classList.remove('scale-100', 'opacity-100');
+            modalContent.classList.add('scale-95', 'opacity-0');
+        setTimeout(() => modal.classList.add('hidden'), 300); 
+         }
     });
 }
 
-// openCharacterModal agora recebe o ID e busca os detalhes do back-end
 async function openCharacterModal(id_personagem) {
     const modal = document.getElementById('characterModal');
+    const modalContent = modal.querySelector('.modal-content');
     const modalImage = document.getElementById('modalCharacterImage');
     const modalName = document.getElementById('modalCharacterName');
     const modalBio = document.getElementById('modalCharacterBio');
-    const modalMoves = document.getElementById('modalCharacterMoves');
+    const modalRaceOriginAlign = document.getElementById('modalRaceOriginAlign'); 
+    const modalAgeStatus = document.getElementById('modalAgeStatus'); 
+    const modalCla = document.getElementById('modalCla'); 
+    const modalMundo = document.getElementById('modalMundo'); 
+    const modalArma = document.getElementById('modalArma'); 
+    const modalTransformacao = document.getElementById('modalTransformacao'); 
+    const modalMoves = document.getElementById('modalCharacterMoves'); // Este agora exibirá a habilidade principal
     const modalFatality = document.getElementById('modalCharacterFatality');
 
-    // Limpa conteúdo antigo e mostra mensagem de carregamento
+
+// Limpa conteúdo antigo
     modalImage.src = '';
     modalName.textContent = 'Carregando...';
-    modalBio.textContent = '';
-    modalMoves.innerHTML = '<li>Carregando habilidades...</li>';
+    modalBio.textContent = ''; 
+    modalRaceOriginAlign.textContent = '';
+    modalAgeStatus.textContent = '';
+    modalCla.textContent = '';
+    modalMundo.textContent = '';
+    modalArma.textContent = '';
+    modalTransformacao.textContent = '';
+    modalMoves.innerHTML = '<li>Carregando habilidade principal...</li>'; // Texto atualizado
     modalFatality.textContent = 'Carregando fatality...';
-    modal.classList.remove('hidden');
+    modal.classList.remove('hidden'); 
 
-    try {
-        const response = await fetch(`http://127.0.0.1:5000/api/personagens/${id_personagem}`);
-        if (!response.ok) {
-            throw new Error(`Erro ao buscar detalhes do personagem: ${response.statusText}`);
+     setTimeout(() => {
+     modalContent.classList.remove('scale-95', 'opacity-0');
+    modalContent.classList.add('scale-100', 'opacity-100');
+ }, 10); 
+
+try {
+     const response = await fetch(`http://127.0.0.1:5000/api/personagens/${id_personagem}`);
+      if (!response.ok) {
+         throw new Error(`Erro ao buscar detalhes do personagem: ${response.statusText}`);
         }
         const characterData = await response.json();
 
-        // Popula o modal com os dados do back-end
-        modalImage.src = characterImages[characterData.nome] || 'https://via.placeholder.com/250x300/333/666?text=Image+Missing';
+
+        const imageUrl = characterImages[characterData.nome] || 'https://via.placeholder.com/250x300/333/666?text=Image+Missing';
+        modalImage.src = imageUrl;
         modalImage.alt = characterData.nome;
         modalName.textContent = characterData.nome;
-        modalBio.textContent = `Raça: ${characterData.raca} | Idade: ${characterData.idade} | Status: ${characterData.status_vida}`; // Exemplo, adapte a bio real se tiver no BD
 
-        // Habilidades
-        modalMoves.innerHTML = '';
-        if (characterData.habilidades && characterData.habilidades.length > 0) {
-            characterData.habilidades.forEach(habilidade => {
-                const li = document.createElement('li');
-                li.className = 'flex items-start';
-                li.innerHTML = `
-                    <span class="text-red-500 mr-2">•</span>
-                    <span>${habilidade.nome} (Tipo: ${habilidade.tipo}, Categoria: ${habilidade.categoria}, Elemento: ${habilidade.elemento})</span>
-                `;
-                modalMoves.appendChild(li);
-            });
-        } else {
-            modalMoves.innerHTML = '<li>Nenhuma habilidade encontrada.</li>';
+         modalRaceOriginAlign.innerHTML = `<span class="font-bold">Raça:</span> ${characterData.raca || 'N/A'} | <span class="font-bold">Origem:</span> ${characterData.origem || 'N/A'} | <span class="font-bold">Alinhamento:</span> ${characterData.alinhamento || 'N/A'}`;
+         modalAgeStatus.innerHTML = `<span class="font-bold">Idade:</span> ${characterData.idade || 'N/A'} | <span class="font-bold">Status:</span> ${characterData.status_vida || 'N/A'}`;
+
+     if (characterData.nome_cla) {
+     modalCla.innerHTML = `<span class="font-bold">Clã:</span> ${characterData.nome_cla || 'N/A'} ${characterData.simbolo_cla ? `<img src="https://example.com/assets/${characterData.simbolo_cla}" alt="Símbolo" class="inline-block h-6 ml-2">` : ''}`;
+     } else {
+         modalCla.textContent = 'Clã: N/A';
         }
 
-        // Fatality
-        if (characterData.fatality_detalhes && characterData.fatality_detalhes.nome) {
-            modalFatality.textContent = `Nome: ${characterData.fatality_detalhes.nome} | Brutalidade: ${characterData.fatality_detalhes.brutalidade} | Tipo: ${characterData.fatality_detalhes.tipo} | Origem: ${characterData.fatality_detalhes.origem}`;
+ if (characterData.nome_mundo) {
+         modalMundo.innerHTML = `<span class="font-bold">Mundo:</span> ${characterData.nome_mundo || 'N/A'} (${characterData.tipo_mundo || 'N/A'})`;
         } else {
-            modalFatality.textContent = 'Nenhuma Fatality associada ou encontrada.';
+         modalMundo.textContent = 'Mundo: N/A';
         }
 
-    } catch (error) {
+
+         if (characterData.nome_arma) {
+             modalArma.innerHTML = `<span class="font-bold">Arma:</span> ${characterData.nome_arma || 'N/A'} (Tipo: ${characterData.tipo_arma || 'N/A'}, Dano: ${characterData.dano_arma || 'N/A'})`;
+        } else {
+             modalArma.textContent = 'Arma: N/A';
+        }
+
+        if (characterData.tipo_transformacao || characterData.forma_transformacao) {
+             modalTransformacao.innerHTML = `<span class="font-bold">Transformação:</span> ${characterData.tipo_transformacao || 'N/A'} - ${characterData.forma_transformacao || 'N/A'}`;
+         } else {
+             modalTransformacao.textContent = 'Transformação: N/A';
+         }
+
+        modalMoves.innerHTML = ''; // Limpa o conteúdo anterior
+            if (characterData.habilidade_principal) {
+             modalMoves.innerHTML = `
+                <li class="flex items-start text-gray-400">
+                     <span class="text-red-500 mr-2">•</span>
+                     <span>${characterData.habilidade_principal}</span>
+            </li>
+         `;
+         } else {
+         modalMoves.innerHTML = '<li>Nenhuma habilidade principal encontrada.</li>';
+        }
+
+     if (characterData.fatality_detalhes && characterData.fatality_detalhes.nome) {
+             modalFatality.innerHTML = `
+                 <span class="font-bold">Nome:</span> ${characterData.fatality_detalhes.nome || 'N/A'} | 
+                 <span class="font-bold">Brutalidade:</span> ${characterData.fatality_detalhes.brutalidade || 'N/A'} | 
+                 <span class="font-bold">Tipo:</span> ${characterData.fatality_detalhes.tipo || 'N/A'} | 
+                 <span class="font-bold">Origem:</span> ${characterData.fatality_detalhes.origem || 'N/A'}
+        `;
+        } else {
+         modalFatality.textContent = 'Nenhuma Fatality associada ou encontrada.';
+     }
+
+ 
+     } catch (error) {
         console.error('Erro ao carregar detalhes do personagem:', error);
-        modalName.textContent = 'Erro';
-        modalBio.textContent = `Não foi possível carregar os detalhes: ${error.message}`;
-        modalMoves.innerHTML = '';
-        modalFatality.textContent = '';
-    }
+        modalName.textContent = 'Erro ao Carregar';
+        modalRaceOriginAlign.textContent = `Não foi possível carregar os detalhes: ${error.message}`;
+        modalAgeStatus.textContent = '';
+        modalCla.textContent = '';
+        modalMundo.textContent = '';
+        modalArma.textContent = '';
+        modalTransformacao.textContent = '';
+        modalMoves.innerHTML = '<li>Erro ao carregar habilidade.</li>';
+        modalFatality.textContent = 'Erro ao carregar fatality.';
+ }
 }
 
-
-// --- Lógica para o efeito de sangue ao clicar (já estava no seu HTML, movido para cá) ---
 document.addEventListener('click', function(e) {
-    if (e.target.tagName === 'BUTTON' || e.target.parentElement.tagName === 'BUTTON') {
-        const blood = document.createElement('div');
-        blood.className = 'absolute w-4 h-4 bg-red-600 rounded-full pointer-events-none opacity-70';
-        blood.style.left = `${e.pageX - 8}px`;
-        blood.style.top = `${e.pageY - 8}px`;
-        document.body.appendChild(blood);
-        
-        setTimeout(() => {
-            blood.style.transform = 'scale(2)';
-            blood.style.opacity = '0';
-        }, 10);
-        
-        setTimeout(() => {
-            blood.remove();
-        }, 500);
+    const targetButton = e.target.closest('button');
+    const targetLink = e.target.closest('a'); 
+
+    if (targetButton || targetLink) {
+    const blood = document.createElement('div');
+     blood.className = 'absolute w-4 h-4 bg-red-600 rounded-full pointer-events-none opacity-70';
+     blood.style.left = `${e.clientX - 8}px`; 
+     blood.style.top = `${e.clientY - 8}px`;
+     document.body.appendChild(blood);
+
+     setTimeout(() => {
+     blood.style.transform = 'scale(2)';
+     blood.style.opacity = '0';
+     }, 10); 
+    
+     setTimeout(() => {
+         blood.remove();
+         }, 500); 
     }
 });

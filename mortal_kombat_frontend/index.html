@@ -1,562 +1,299 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mortal Kombat | FATALITY</title>
+    <title>Mortal Kombat - Portal dos Guerreiros</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@400;700&display=swap');
         
         body {
-            font-family: 'Orbitron', sans-serif;
-            background-color: #000;
-            color: #fff;
+            font-family: 'Oswald', sans-serif;
+            background-color: #0a0a0a;
+            color: #e0e0e0;
             overflow-x: hidden;
         }
-        
+
         .blood-text {
-            text-shadow: 0 0 5px #ff0000, 0 0 10px #ff0000, 0 0 15px #ff0000;
+            text-shadow: 2px 2px 0px #8a0303, 4px 4px 0px #5a0101;
+        }
+        
+        .character-card {
+            transition: all 0.3s ease;
+            transform-style: preserve-3d;
         }
         
         .character-card:hover {
-            transform: scale(1.05);
-            box-shadow: 0 0 20px rgba(255, 0, 0, 0.7);
+            transform: translateY(-10px) scale(1.03);
+            box-shadow: 0 10px 20px rgba(255, 0, 0, 0.3);
         }
         
-        .fatality-btn {
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .fatality-btn::after {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: linear-gradient(
-                to bottom right,
-                rgba(255, 0, 0, 0) 45%,
-                rgba(255, 0, 0, 0.8) 50%,
-                rgba(255, 0, 0, 0) 55%
-            );
-            transform: rotate(30deg);
-            animation: shine 3s infinite;
-        }
-        
-        @keyframes shine {
-            0% { left: -50%; top: -50%; }
-            100% { left: 150%; top: 150%; }
-        }
-        
-        .blood-drip {
-            position: relative;
-        }
-        
-        .blood-drip::after {
-            content: '';
-            position: absolute;
-            bottom: -10px;
-            left: 0;
-            width: 100%;
-            height: 5px;
-            background: linear-gradient(to right, transparent, #ff0000, transparent);
-            border-radius: 50%;
-            filter: blur(2px);
+        .fatalities-bg {
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7));
+            background-size:auto;
+            background-position: center;
         }
         
         .mk-logo {
-            filter: drop-shadow(0 0 5px #ff0000) drop-shadow(0 0 10px #ff0000);
+            filter: drop-shadow(0 0 10px rgba(0, 0, 0, 0.7));
         }
         
-        .character-modal {
-            background: rgba(0, 0, 0, 0.9);
-            backdrop-filter: blur(10px);
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
         }
         
-        .combo-input {
-            background: rgba(20, 20, 20, 0.7);
-            border: 1px solid #ff0000;
-            color: #ff0000;
-            font-family: 'Orbitron', sans-serif;
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+
+        /* Estilos para o Modal */
+        .modal {
+            background-color: rgba(0, 0, 0, 0.7); /* Fundo escuro semi-transparente */
+            backdrop-filter: blur(5px); /* Efeito de desfoque */
         }
     </style>
 </head>
-<body class="min-h-screen">
-    <!-- Blood splatter background elements -->
-    <div class="fixed top-0 left-0 w-full h-full pointer-events-none z-0 opacity-20">
-        <div class="absolute top-10 left-20 w-20 h-20 bg-red-600 rounded-full filter blur-xl opacity-70"></div>
-        <div class="absolute top-1/3 right-40 w-32 h-32 bg-red-600 rounded-full filter blur-xl opacity-70"></div>
-        <div class="absolute bottom-20 left-1/4 w-24 h-24 bg-red-600 rounded-full filter blur-xl opacity-70"></div>
-        <div class="absolute bottom-1/3 right-20 w-16 h-16 bg-red-600 rounded-full filter blur-xl opacity-70"></div>
-    </div>
-
-    <!-- Header -->
-    <header class="relative z-10 py-6 border-b border-red-900">
-        <div class="container mx-auto px-4 flex flex-col md:flex-row items-center justify-between">
-            <div class="flex items-center mb-4 md:mb-0">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/34/Mortal_kombat_logo.svg/1200px-Mortal_kombat_logo.svg.png" 
-                     alt="Mortal Kombat Logo" 
-                     class="mk-logo h-12 md:h-16">
-                <span class="ml-2 text-xl md:text-2xl font-bold blood-text">FATALITY EDITION</span>
+<body>
+    <header class="bg-black border-b-4 sticky top-0 z-50">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center">
+                <img src="assets/images/logo/logomenor.png" 
+                    alt="Mortal Kombat Logo" class="h-12 mk-logo">
             </div>
-            
-            <nav class="flex space-x-1 md:space-x-4">
-                <a href="#" class="px-3 py-2 rounded hover:bg-red-900 hover:text-white transition">HOME</a>
-                <a href="#characters" class="px-3 py-2 rounded hover:bg-red-900 hover:text-white transition">CHARACTERS</a>
-                <a href="#games" class="px-3 py-2 rounded hover:bg-red-900 hover:text-white transition">GAMES</a>
-                <a href="#news" class="px-3 py-2 rounded hover:bg-red-900 hover:text-white transition">NEWS</a>
-                <a href="#about" class="px-3 py-2 rounded hover:bg-red-900 hover:text-white transition">ABOUT</a>
+            <nav class="hidden md:flex space-x-6">
+                <a href="#historia" class="text-red-400 hover:text-red-600 transition">História</a>
+                <a href="#personagens" class="text-red-400 hover:text-red-600 transition">Personagens</a>
+                <a href="#jogos" class="text-red-400 hover:text-red-600 transition">Jogos</a>
+                <a href="#fatalities" class="text-red-400 hover:text-red-600 transition">Fatalities</a> 
+                <a href="#curiosidades" class="text-red-400 hover:text-red-600 transition">Curiosidades</a>
             </nav>
+            <button class="md:hidden text-red-500 text-2xl">
+                <i class="fas fa-bars"></i>
+            </button>
         </div>
     </header>
 
-    <!-- Hero Section -->
-    <section class="relative z-10 py-16 md:py-24 px-4 text-center">
-        <div class="container mx-auto">
-            <h1 class="text-4xl md:text-6xl font-bold mb-6 blood-text blood-drip">MORTAL KOMBAT</h1>
-            <p class="text-xl md:text-2xl mb-8 max-w-3xl mx-auto">The legendary fighting franchise that redefined violence in video games. Test your might!</p>
-            <div class="flex flex-col md:flex-row justify-center gap-4">
-                <button class="fatality-btn px-8 py-3 bg-red-600 hover:bg-red-700 text-white font-bold rounded-lg transition transform hover:scale-105">
-                    WATCH TRAILER <i class="fas fa-play ml-2"></i>
-                </button>
-                <button class="px-8 py-3 bg-gray-800 hover:bg-gray-700 text-white font-bold rounded-lg border border-red-600 transition transform hover:scale-105">
-                    BUY NOW <i class="fas fa-shopping-cart ml-2"></i>
-                </button>
-            </div>
+    <section class="relative h-screen flex items-center justify-center overflow-hidden">
+        <div class="absolute inset-0 bg-black opacity-60 z-10"></div>
+        <video autoplay muted loop class="absolute w-full h-full object-cover">
+            <source src="https://assets.mixkit.co/videos/preview/mixkit-close-up-of-a-man-doing-martial-arts-43775-large.mp4" type="video/mp4">
+        </video>
+        <div class="relative z-20 text-center px-4">
+            <h1 class="text-5xl md:text-7xl font-bold text-red-600 blood-text mb-6">MORTAL KOMBAT</h1>
+            <p class="text-xl md:text-2xl text-white max-w-3xl mx-auto mb-8">
+                A franquia de jogos de luta mais brutal e icônica de todos os tempos
+            </p>
+            <a href="#historia" class="bg-red-700 hover:bg-red-800 text-white px-8 py-3 rounded-full text-lg font-bold transition transform hover:scale-105">
+                DESCUBRA A HISTÓRIA <i class="fas fa-chevron-down ml-2"></i>
+            </a>
         </div>
     </section>
 
-    <!-- Featured Character -->
-    <section class="relative z-10 py-12 bg-gradient-to-b from-gray-900 to-black">
+   <section id="historia" class="py-16 bg-gray-900">
+    <div class="container mx-auto px-4">
+        <h2 class="text-4xl font-bold text-center text-red-600 blood-text mb-12">A HISTÓRIA DE MORTAL KOMBAT</h2>
+        
+        <div class="grid md:grid-cols-2 gap-8 items-center mb-12">
+            <div>
+                <h3 class="text-2xl font-bold text-red-500 mb-4">O Início: Arcade e Violência (1992-1995)</h3>
+                <p class="text-lg mb-4">
+                    Em 1992, Ed Boon e John Tobias lançaram Mortal Kombat nos arcades, chocando o mundo dos videogames. Sua digitalização de atores reais e, principalmente, os famosos 'Fatalities', o transformaram em um fenômeno. O sucesso levou a continuações rápidas como MKII e MK3, que expandiram o universo e a jogabilidade, mas também geraram controvérsia e a criação do sistema de classificação ESRB.
+                </p>
+                <p class="text-lg">
+                    Essa era dourada estabeleceu personagens icônicos como Scorpion, Sub-Zero, Liu Kang e Raiden, e consolidou a série como sinônimo de brutalidade e inovação.
+                </p>
+            </div>
+            <div class="flex justify-center">
+                <img src="assets/images/historia/arcadec.webp" 
+                    alt="Mortal Kombat 1 Arcade e Personagens Clássicos" class="rounded-lg shadow-xl border-2 border-red-700 max-h-80 w-full object-cover">
+            </div>
+        </div>
+        
+        <div class="grid md:grid-cols-2 gap-8 items-center mt-8 md:flex-row-reverse">
+            <div class="order-1 md:order-2">
+                <h3 class="text-2xl font-bold text-red-500 mb-4">A Era 3D: Inovação e Expansão (2002-2008)</h3>
+                <p class="text-lg mb-4">
+                    Após um período de transição, Mortal Kombat renasceu no universo 3D com títulos como Deadly Alliance e Deception. Essa fase introduziu estilos de luta múltiplos e a exploração de reinos como o Outworld e o Netherrealm, aprofundando a mitologia da série.
+                </p>
+                <p class="text-lg">
+                    Apesar de mudanças significativas na jogabilidade, a essência brutal e a narrativa complexa de Mortal Kombat se mantiveram, atraindo uma nova geração de fãs e consolidando seu lugar na história dos jogos de luta.
+                </p>
+            </div>
+            <div class="flex justify-center order-2 md:order-1">
+                <img src="assets/images/historia/inovacao.png" 
+                    alt="Capa de Mortal Kombat Deadly Alliance" class="rounded-lg shadow-xl border-2 border-red-700 max-h-80 w-full object-cover">
+            </div>
+        </div>
+
+        </div>
+</section>
+
+    <section id="personagens" class="py-16 bg-black">
         <div class="container mx-auto px-4">
-            <h2 class="text-3xl font-bold mb-8 text-center blood-text">FEATURED WARRIOR</h2>
-            <div class="flex flex-col md:flex-row items-center bg-gray-900 rounded-lg overflow-hidden border border-red-900">
-                <div class="md:w-1/2 p-6 md:p-10">
-                    <h3 class="text-2xl md:text-4xl font-bold mb-4 blood-text">SCORPION</h3>
-                    <p class="text-gray-300 mb-6">"GET OVER HERE!" The specter of vengeance, Scorpion is one of the most iconic fighters in Mortal Kombat history. Wielding hellfire and a kunai spear, he seeks revenge for his clan's annihilation.</p>
-                    <div class="mb-6">
-                        <h4 class="text-xl font-bold mb-2 text-red-500">Signature Moves:</h4>
-                        <ul class="space-y-2">
-                            <li><span class="text-red-500 font-bold">Spear:</span> ← → + Punch</li>
-                            <li><span class="text-red-500 font-bold">Teleport Punch:</span> ↓ ↑ + Punch</li>
-                            <li><span class="text-red-500 font-bold">Hellfire:</span> ↓ → + Kick</li>
-                        </ul>
-                    </div>
-                    <button class="px-6 py-2 bg-red-600 hover:bg-red-700 text-white rounded">
-                        LEARN MORE <i class="fas fa-chevron-right ml-2"></i>
-                    </button>
+            <h2 class="text-4xl font-bold text-center text-red-600 blood-text mb-12">PERSONAGENS ICÔNICOS</h2>
+            
+            <div id="characters"> 
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+                    <p class="col-span-full text-center text-gray-400">Carregando Kombatants...</p>
                 </div>
-                <div class="md:w-1/2">
-                    <img src="https://www.fightersgeneration.com/nf7/char/scorpion-mk11-render.png" 
-                         alt="Scorpion" 
-                         class="w-full h-auto object-cover">
-                </div>
+            </div>
+            
+            <div class="text-center mt-12">
+                <button id="showMoreChars" class="bg-red-700 hover:bg-red-800 text-white px-6 py-2 rounded-full font-bold transition">
+                    MOSTRAR MAIS PERSONAGENS <i class="fas fa-chevron-down ml-2"></i>
+                </button>
             </div>
         </div>
     </section>
 
-    <!-- Characters Grid -->
-    <section id="characters" class="relative z-10 py-16 px-4">
-        <div class="container mx-auto">
-            <h2 class="text-3xl font-bold mb-12 text-center blood-text blood-drip">KOMBATANTS</h2>
-            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-                <!-- Character cards will be generated by JavaScript -->
-            </div>
-        </div>
-    </section>
-
-    <!-- Games Timeline -->
-    <section id="games" class="relative z-10 py-16 bg-gradient-to-b from-black to-gray-900 px-4">
-        <div class="container mx-auto">
-            <h2 class="text-3xl font-bold mb-12 text-center blood-text">MORTAL KOMBAT TIMELINE</h2>
-            <div class="relative">
-                <!-- Timeline line -->
-                <div class="hidden md:block absolute left-1/2 h-full w-1 bg-red-600 transform -translate-x-1/2"></div>
-                
-                <!-- Timeline items -->
-                <div class="space-y-12 md:space-y-0">
-                    <!-- Item 1 -->
-                    <div class="relative md:flex justify-between items-center mb-16 timeline-item">
-                        <div class="md:w-5/12 md:pr-8 text-right mb-4 md:mb-0">
-                            <h3 class="text-2xl font-bold blood-text">Mortal Kombat (1992)</h3>
-                            <p class="text-gray-300">The game that started it all. Arcade sensation featuring digitized actors and controversial fatalities.</p>
-                        </div>
-                        <div class="hidden md:block w-2 h-2 rounded-full bg-red-600 mx-auto"></div>
-                        <div class="md:w-5/12 md:pl-8">
-                            <img src="https://upload.wikimedia.org/wikipedia/en/thumb/2/2b/Mortal_Kombat_Logo.png/220px-Mortal_Kombat_Logo.png" 
-                                 alt="MK1" 
-                                 class="w-full max-w-xs mx-auto rounded border border-red-900">
-                        </div>
-                    </div>
-                    
-                    <!-- Item 2 -->
-                    <div class="relative md:flex justify-between items-center mb-16 timeline-item">
-                        <div class="md:w-5/12 md:pr-8 order-last">
-                            <img src="https://upload.wikimedia.org/wikipedia/en/thumb/5/5d/Mortal_Kombat_II_cover.jpg/220px-Mortal_Kombat_II_cover.jpg" 
-                                 alt="MK2" 
-                                 class="w-full max-w-xs mx-auto rounded border border-red-900">
-                        </div>
-                        <div class="hidden md:block w-2 h-2 rounded-full bg-red-600 mx-auto"></div>
-                        <div class="md:w-5/12 md:pl-8 text-left mb-4 md:mb-0">
-                            <h3 class="text-2xl font-bold blood-text">Mortal Kombat II (1993)</h3>
-                            <p class="text-gray-300">Improved gameplay, more characters, and even more brutal fatalities. Considered by many as the best in the series.</p>
-                        </div>
-                    </div>
-                    
-                    <!-- Item 3 -->
-                    <div class="relative md:flex justify-between items-center mb-16 timeline-item">
-                        <div class="md:w-5/12 md:pr-8 text-right mb-4 md:mb-0">
-                            <h3 class="text-2xl font-bold blood-text">Mortal Kombat 11 (2019)</h3>
-                            <p class="text-gray-300">Latest main entry featuring time-bending story, custom variations, and the most gruesome fatalities yet.</p>
-                        </div>
-                        <div class="hidden md:block w-2 h-2 rounded-full bg-red-600 mx-auto"></div>
-                        <div class="md:w-5/12 md:pl-8">
-                            <img src="https://upload.wikimedia.org/wikipedia/en/thumb/a/a0/Mortal_Kombat_11_cover_art.png/220px-Mortal_Kombat_11_cover_art.png" 
-                                 alt="MK11" 
-                                 class="w-full max-w-xs mx-auto rounded border border-red-900">
-                        </div>
-                    </div>
+    <section id="jogos" class="py-16 fatalities-bg">
+        <div class="container mx-auto px-4">
+            <h2 class="text-4xl font-bold text-center text-red-600 blood-text mb-12">A EVOLUÇÃO DOS JOGOS</h2>
+            
+            <div id="games">
+                <div class="bg-black bg-opacity-80 p-8 rounded-lg max-w-4xl mx-auto space-y-12">
+                    <p class="text-center text-gray-400">Carregando Linha do Tempo...</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- News Section -->
-    <section id="news" class="relative z-10 py-16 px-4 bg-gray-900">
-        <div class="container mx-auto">
-            <h2 class="text-3xl font-bold mb-12 text-center blood-text">LATEST KOMBAT NEWS</h2>
+<section id="fatalities" class="py-16 bg-black">
+        <div class="container mx-auto px-4">
+            <h2 class="text-4xl font-bold text-center text-red-600 blood-text mb-12">FATALITIES: A ARTE FINAL</h2>
+            
+            <div id="fatalities-lista" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <p class="col-span-full text-center text-gray-400">Carregando Fatalities...</p>
+            </div>
+
+            <div class="text-center mt-12">
+                <button id="showMoreFatalities" class="bg-red-700 hover:bg-red-800 text-white px-6 py-2 rounded-full font-bold transition">
+                    MOSTRAR MAIS FATALITIES <i class="fas fa-chevron-down ml-2"></i>
+                </button>
+            </div>
+        </div>
+    </section>
+   
+   
+    <section id="curiosidades" class="py-16 bg-gray-900">
+        <div class="container mx-auto px-4">
+            <h2 class="text-4xl font-bold text-center text-red-600 blood-text mb-12">CURIOSIDADES</h2>
+            
             <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <!-- News cards will be generated by JavaScript -->
+                <div class="bg-gray-800 p-6 rounded-lg border-l-4 border-red-600">
+                    <div class="text-red-500 text-3xl mb-4">
+                        <i class="fas fa-exclamation-triangle"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-2">Controvérsia</h3>
+                    <p class="text-gray-300">
+                        Mortal Kombat foi um dos principais responsáveis pela criação do sistema de classificação ESRB devido à sua violência explícita.
+                    </p>
+                </div>
+                
+                <div class="bg-gray-800 p-6 rounded-lg border-l-4 border-yellow-400">
+                    <div class="text-yellow-400 text-3xl mb-4">
+                        <i class="fas fa-film"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-2">Filmes</h3>
+                    <p class="text-gray-300">
+                        A franquia inspirou dois filmes live-action (1995 e 2021), séries animadas e uma websérie chamada Mortal Kombat: Legacy.
+                    </p>
+                </div>
+                
+                <div class="bg-gray-800 p-6 rounded-lg border-l-4 border-blue-400">
+                    <div class="text-blue-400 text-3xl mb-4">
+                        <i class="fas fa-gamepad"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-2">Tecnologia</h3>
+                    <p class="text-gray-300">
+                        Os primeiros jogos usavam atores reais digitalizados (motion capture primitiva), dando um visual único aos personagens.
+                    </p>
+                </div>
+                
+                <div class="bg-gray-800 p-6 rounded-lg border-l-4 border-green-400">
+                    <div class="text-green-400 text-3xl mb-4">
+                        <i class="fas fa-trophy"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-2">Competitivo</h3>
+                    <p class="text-gray-300">
+                        Mortal Kombat tem uma cena competitiva ativa, com torneios como o EVO mostrando jogadores profissionais em ação.
+                    </p>
+                </div>
+                
+                <div class="bg-gray-800 p-6 rounded-lg border-l-4 border-purple-400">
+                    <div class="text-purple-400 text-3xl mb-4">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-2">Personagens Secretos</h3>
+                    <p class="text-gray-300">
+                        A série é conhecida por seus personagens secretos como Reptile (o primeiro), Smoke e Noob Saibot (nome dos criadores ao contrário).
+                    </p>
+                </div>
+                
+                <div class="bg-gray-800 p-6 rounded-lg border-l-4 border-pink-400">
+                    <div class="text-pink-400 text-3xl mb-4">
+                        <i class="fas fa-chess"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-2">Crossovers</h3>
+                    <p class="text-gray-300">
+                        Personagens de outras franquias como Freddy Krueger, Jason Voorhees, Alien e Predador já apareceram em jogos de MK.
+                    </p>
+                </div>
             </div>
         </div>
     </section>
 
-    <!-- About Section -->
-    <section id="about" class="relative z-10 py-16 px-4 bg-black">
-        <div class="container mx-auto max-w-4xl">
-            <h2 class="text-3xl font-bold mb-12 text-center blood-text">ABOUT MORTAL KOMBAT</h2>
-            <div class="bg-gray-900 p-8 rounded-lg border border-red-900">
-                <p class="mb-6 text-gray-300">Mortal Kombat is a media franchise centered on a series of fighting video games originally developed by Midway Games in 1992. The development of the first game was originally based on an idea that Ed Boon and John Tobias had of making a video game starring Jean-Claude Van Damme.</p>
-                <p class="mb-6 text-gray-300">The series has a reputation for high levels of graphic violence, including, most notably, its fatalities, which are finishing moves that kill the opponent instead of knocking them out. Controversies surrounding Mortal Kombat, in part, led to the creation of the Entertainment Software Rating Board (ESRB) video game rating system.</p>
-                <p class="text-gray-300">The franchise has spawned several action-adventure games, films (both live-action and animated), television series, comic book series, a card game and a live-action tour. Mortal Kombat has become the best-selling fighting game franchise worldwide and one of the highest-grossing media franchises of all time.</p>
-            </div>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer class="relative z-10 py-12 px-4 bg-black border-t border-red-900">
-        <div class="container mx-auto">
+    <footer class="bg-black py-8 border-t-4 border-red-800">
+        <div class="container mx-auto px-4">
             <div class="flex flex-col md:flex-row justify-between items-center">
-                <div class="mb-6 md:mb-0">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/34/Mortal_kombat_logo.svg/1200px-Mortal_kombat_logo.svg.png" 
-                         alt="Mortal Kombat Logo" 
-                         class="h-10">
-                    <p class="text-gray-400 mt-2">© 2023 Mortal Kombat. All rights reserved.</p>
+                <div class="mb-4 md:mb-0">
+                    <img src="assets/images/logo/logo.png" 
+                        alt="Mortal Kombat Logo" class="h-10">
                 </div>
-                <div class="flex space-x-6">
-                    <a href="#" class="text-gray-400 hover:text-red-500 text-xl"><i class="fab fa-facebook"></i></a>
-                    <a href="#" class="text-gray-400 hover:text-red-500 text-xl"><i class="fab fa-twitter"></i></a>
-                    <a href="#" class="text-gray-400 hover:text-red-500 text-xl"><i class="fab fa-instagram"></i></a>
-                    <a href="#" class="text-gray-400 hover:text-red-500 text-xl"><i class="fab fa-youtube"></i></a>
-                    <a href="#" class="text-gray-400 hover:text-red-500 text-xl"><i class="fab fa-twitch"></i></a>
+                <div class="text-center md:text-right">
+                    <p class="text-gray-400 mb-2">
+                        Por Alice Botton Dal Paz e Pauline Antônia Pavan
+                    </p>
+                    <p class="text-gray-500 text-sm">
+                        Trabalho final de Banco de Dados I
+                    </p>
                 </div>
-            </div>
-            <div class="mt-8 pt-8 border-t border-gray-800 text-center text-gray-500 text-sm">
-                <p>Mortal Kombat, the dragon logo, NetherRealm Studios, and all related characters and elements are trademarks of Warner Bros. Entertainment Inc.</p>
-                <p class="mt-2">This is a fan-made website and is not affiliated with Warner Bros. or NetherRealm Studios.</p>
             </div>
         </div>
     </footer>
 
-    <!-- Character Modal -->
-    <div id="characterModal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 character-modal">
-        <div class="relative bg-gray-900 rounded-lg max-w-4xl w-full max-h-[90vh] overflow-y-auto border-2 border-red-700">
-            <button id="closeModal" class="absolute top-4 right-4 text-white hover:text-red-500 text-2xl">
-                <i class="fas fa-times"></i>
-            </button>
-            <div class="p-8">
-                <div class="flex flex-col md:flex-row gap-8">
-                    <div class="md:w-1/3">
-                        <img id="modalCharacterImage" 
-                             src="" 
-                             alt="Character" 
-                             class="w-full rounded-lg border border-red-900">
-                        <div class="mt-6">
-                            <h3 class="text-xl font-bold mb-2 text-red-500">MOVESET</h3>
-                            <ul id="modalCharacterMoves" class="space-y-2 text-gray-300">
-                                <!-- Moves will be populated by JavaScript -->
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="md:w-2/3">
-                        <h2 id="modalCharacterName" class="text-3xl md:text-4xl font-bold mb-4 blood-text"></h2>
-                        <p id="modalCharacterBio" class="text-gray-300 mb-6"></p>
-                        <div class="mb-6">
-                            <h3 class="text-xl font-bold mb-2 text-red-500">FATALITY</h3>
-                            <div class="bg-gray-800 p-4 rounded">
-                                <p id="modalCharacterFatality" class="text-gray-300"></p>
-                            </div>
-                        </div>
-                        <div>
-                            <h3 class="text-xl font-bold mb-2 text-red-500">COMBO TRIAL</h3>
-                            <div class="flex items-center gap-4 mb-4">
-                                <input type="text" 
-                                       class="combo-input px-4 py-2 rounded w-full" 
-                                       placeholder="Enter combo (e.g., → ↓ ← HP)">
-                                <button class="px-4 py-2 bg-red-600 hover:bg-red-700 rounded">
-                                    TEST <i class="fas fa-bolt ml-2"></i>
-                                </button>
-                            </div>
-                            <div class="h-24 bg-gray-800 rounded p-4 text-gray-400">
-                                <p>Combo result will appear here...</p>
-                            </div>
-                        </div>
-                    </div>
+    <div class="fixed bottom-6 right-6">
+        <a href="#" class="bg-red-700 text-white w-12 h-12 rounded-full flex items-center justify-center text-xl shadow-lg transform hover:scale-110 transition pulse">
+            <i class="fas fa-arrow-up"></i>
+        </a>
+    </div>
+
+    <div id="characterModal" class="modal fixed inset-0 hidden flex items-center justify-center z-50 p-4">
+        <div class="bg-gray-900 border-2 border-red-700 rounded-lg shadow-xl p-8 max-w-2xl w-full relative transform transition-all duration-300 scale-95 opacity-0 modal-content">
+            <button id="closeModal" class="absolute top-4 right-4 text-red-500 hover:text-red-700 text-3xl font-bold">&times;</button>
+            <div class="md:flex items-center">
+                <div class="md:w-1/3 flex justify-center mb-6 md:mb-0">
+                    <img id="modalCharacterImage" src="" alt="Imagem do Personagem" class="w-48 h-auto rounded-lg border-2 border-gray-700 shadow-lg">
+                </div>
+                <div class="md:w-2/3 md:pl-8">
+                    <h2 id="modalCharacterName" class="text-4xl font-bold blood-text mb-4"></h2>
+                    <p id="modalCharacterBio" class="text-gray-300 text-lg mb-4"></p>
+                    
+                    <h3 class="text-xl font-bold text-red-500 mb-2">Habilidades:</h3>
+                    <ul id="modalCharacterMoves" class="list-none text-gray-400 space-y-1 pl-0">
+                        </ul>
+
+                    <h3 class="text-xl font-bold text-red-500 mt-6 mb-2">Fatality:</h3>
+                    <p id="modalCharacterFatality" class="text-gray-300"></p>
                 </div>
             </div>
         </div>
     </div>
 
-    <script>
-        // Character data
-        const characters = [
-            {
-                name: "Sub-Zero",
-                image: "https://www.fightersgeneration.com/nf7/char/subzero-mk11-render.png",
-                bio: "The grandmaster of the Lin Kuei, Sub-Zero wields the power of cryomancy to freeze his opponents. He is one of the few original characters to appear in every Mortal Kombat game.",
-                moves: [
-                    "Ice Ball: ↓ → + Punch",
-                    "Slide: ← ← + Kick",
-                    "Ice Clone: ↓ ↑ + Punch",
-                    "Cold Shoulder: → ↓ ← + Punch"
-                ],
-                fatality: "Spinal Rip: Forward, Down, Forward, Front Punch (Close)"
-            },
-            {
-                name: "Liu Kang",
-                image: "https://www.fightersgeneration.com/nf7/char/liu-kang-mk11-render.png",
-                bio: "The reigning champion of Mortal Kombat and Earthrealm's greatest warrior. Liu Kang fights with a mix of martial arts and fire-based attacks.",
-                moves: [
-                    "Bicycle Kick: ← → ← → + Kick",
-                    "Flying Dragon Kick: ↓ ↑ + Kick",
-                    "Fireball: ← → + Punch",
-                    "Dragon Parry: ↓ → + Punch"
-                ],
-                fatality: "Dragon Transformation: Back, Forward, Back, Forward, High Punch (Sweep)"
-            },
-            {
-                name: "Raiden",
-                image: "https://www.fightersgeneration.com/nf7/char/raiden-mk11-render.png",
-                bio: "The God of Thunder and protector of Earthrealm. Raiden wields incredible lightning powers and serves as a mentor to many Earthrealm warriors.",
-                moves: [
-                    "Lightning Bolt: ↓ → + Punch",
-                    "Teleport: ↓ ↑ (no block)",
-                    "Shocker: ← → + Punch",
-                    "Electric Fly: ← → ← + Kick"
-                ],
-                fatality: "Electrocution: Back, Forward, Down, High Punch (Close)"
-            },
-            {
-                name: "Johnny Cage",
-                image: "https://www.fightersgeneration.com/nf7/char/johnny-cage-mk11-render.png",
-                bio: "The egotistical Hollywood action star who proves his martial arts skills are real. Johnny fights with flashy moves and his signature green energy.",
-                moves: [
-                    "Shadow Kick: ← → + Kick",
-                    "Nut Punch: ↓ ← + Punch",
-                    "Force Ball: ↓ → + Punch",
-                    "Shadow Uppercut: ← → + Punch"
-                ],
-                fatality: "Decapitation: Forward, Down, Forward, High Punch (Close)"
-            },
-            {
-                name: "Sonya Blade",
-                image: "https://www.fightersgeneration.com/nf7/char/sonya-blade-mk11-render.png",
-                bio: "A high-ranking officer in Earthrealm's Special Forces. Sonya combines military training with energy rings and drone strikes.",
-                moves: [
-                    "Energy Rings: ← → + Punch",
-                    "Leg Grab: ↓ ← + Kick",
-                    "Arc Kick: ↓ ↑ + Kick",
-                    "Drone Strike: ← → ← + Punch"
-                ],
-                fatality: "Kiss of Death: Back, Forward, Down, High Kick (Jump)"
-            },
-            {
-                name: "Kitana",
-                image: "https://www.fightersgeneration.com/nf7/char/kitana-mk11-render.png",
-                bio: "The princess of Edenia who wields razor-sharp steel fans. Though raised by Shao Kahn, she eventually rebels against him.",
-                moves: [
-                    "Fan Lift: ↓ ↑ + Punch",
-                    "Square Wave: ↓ → + Kick",
-                    "Fan Throw: ← → + Punch",
-                    "Edenian Twist: ← → + Kick"
-                ],
-                fatality: "Fan Slice: Forward, Back, Forward, High Kick (Close)"
-            },
-            {
-                name: "Jax",
-                image: "https://www.fightersgeneration.com/nf7/char/jax-mk11-render.png",
-                bio: "Major Jackson Briggs of the Special Forces with cybernetic arms that grant him superhuman strength.",
-                moves: [
-                    "Ground Pound: ↓ ↑ + Punch",
-                    "Dash Punch: ← → + Punch",
-                    "Gotcha Grab: ← → ← + Punch",
-                    "Energy Wave: ↓ → + Punch"
-                ],
-                fatality: "Arm Rip: Back, Forward, Back, High Punch (Close)"
-            },
-            {
-                name: "Mileena",
-                image: "https://www.fightersgeneration.com/nf7/char/mileena-mk11-render.png",
-                bio: "A clone of Kitana created by Shang Tsung, with the viciousness of a Tarkatan. She fights with sais and her signature teleporting dropkick.",
-                moves: [
-                    "Teleport Drop: ↓ ↑ (no block)",
-                    "Sai Throw: ← → + Punch",
-                    "Rolling Thunder: ← → + Kick",
-                    "Ball Roll: ↓ ← + Kick"
-                ],
-                fatality: "Tasty Treat: Back, Forward, Back, High Kick (Close)"
-            }
-        ];
-
-        // News data
-        const news = [
-            {
-                title: "Mortal Kombat 1 Announced",
-                date: "May 18, 2023",
-                excerpt: "NetherRealm Studios has officially announced Mortal Kombat 1, a reboot of the franchise launching September 2023.",
-                image: "https://assets-prd.ignimgs.com/2023/05/18/mortalkombat1-button-1684436067654.jpg"
-            },
-            {
-                title: "New DLC Characters Revealed",
-                date: "April 12, 2023",
-                excerpt: "The Kombat Pack for MK11 adds three new fighters including guest characters from horror movies.",
-                image: "https://cdn.mos.cms.futurecdn.net/4YQwjY5Qq4hZvEXFZgXfQH.jpg"
-            },
-            {
-                title: "Mortal Kombat Movie Sequel Confirmed",
-                date: "March 8, 2023",
-                excerpt: "Warner Bros. has greenlit a sequel to the 2021 Mortal Kombat movie with returning cast members.",
-                image: "https://static1.colliderimages.com/wordpress/wp-content/uploads/2021/04/mortal-kombat-movie-poster.jpg"
-            }
-        ];
-
-        // Initialize the page
-        document.addEventListener('DOMContentLoaded', function() {
-            // Generate character cards
-            const charactersGrid = document.querySelector('#characters .grid');
-            characters.forEach(character => {
-                const card = document.createElement('div');
-                card.className = 'character-card bg-gray-800 rounded-lg overflow-hidden border border-red-900 cursor-pointer transition duration-300';
-                card.innerHTML = `
-                    <div class="h-48 md:h-56 overflow-hidden">
-                        <img src="${character.image}" 
-                             alt="${character.name}" 
-                             class="w-full h-full object-cover">
-                    </div>
-                    <div class="p-4">
-                        <h3 class="text-xl font-bold blood-text">${character.name}</h3>
-                        <p class="text-gray-400 text-sm mt-2">${character.bio.substring(0, 80)}...</p>
-                    </div>
-                `;
-                card.addEventListener('click', () => openCharacterModal(character));
-                charactersGrid.appendChild(card);
-            });
-
-            // Generate news cards
-            const newsGrid = document.querySelector('#news .grid');
-            news.forEach(item => {
-                const card = document.createElement('div');
-                card.className = 'bg-gray-800 rounded-lg overflow-hidden border border-red-900';
-                card.innerHTML = `
-                    <div class="h-48 overflow-hidden">
-                        <img src="${item.image}" 
-                             alt="${item.title}" 
-                             class="w-full h-full object-cover">
-                    </div>
-                    <div class="p-6">
-                        <span class="text-red-500 text-sm">${item.date}</span>
-                        <h3 class="text-xl font-bold mt-2 mb-3">${item.title}</h3>
-                        <p class="text-gray-400">${item.excerpt}</p>
-                        <button class="mt-4 text-red-500 hover:text-red-400 flex items-center">
-                            Read More <i class="fas fa-chevron-right ml-2"></i>
-                        </button>
-                    </div>
-                `;
-                newsGrid.appendChild(card);
-            });
-
-            // Modal functionality
-            const modal = document.getElementById('characterModal');
-            const closeModal = document.getElementById('closeModal');
-
-            closeModal.addEventListener('click', () => {
-                modal.classList.add('hidden');
-            });
-
-            // Close modal when clicking outside
-            modal.addEventListener('click', (e) => {
-                if (e.target === modal) {
-                    modal.classList.add('hidden');
-                }
-            });
-        });
-
-        function openCharacterModal(character) {
-            const modal = document.getElementById('characterModal');
-            const modalImage = document.getElementById('modalCharacterImage');
-            const modalName = document.getElementById('modalCharacterName');
-            const modalBio = document.getElementById('modalCharacterBio');
-            const modalMoves = document.getElementById('modalCharacterMoves');
-            const modalFatality = document.getElementById('modalCharacterFatality');
-
-            modalImage.src = character.image;
-            modalImage.alt = character.name;
-            modalName.textContent = character.name;
-            modalBio.textContent = character.bio;
-            modalFatality.textContent = character.fatality;
-
-            // Clear previous moves
-            modalMoves.innerHTML = '';
-            
-            // Add new moves
-            character.moves.forEach(move => {
-                const li = document.createElement('li');
-                li.className = 'flex items-start';
-                li.innerHTML = `
-                    <span class="text-red-500 mr-2">•</span>
-                    <span>${move}</span>
-                `;
-                modalMoves.appendChild(li);
-            });
-
-            modal.classList.remove('hidden');
-        }
-
-        // Blood effect on click
-        document.addEventListener('click', function(e) {
-            if (e.target.tagName === 'BUTTON' || e.target.parentElement.tagName === 'BUTTON') {
-                const blood = document.createElement('div');
-                blood.className = 'absolute w-4 h-4 bg-red-600 rounded-full pointer-events-none opacity-70';
-                blood.style.left = `${e.pageX - 8}px`;
-                blood.style.top = `${e.pageY - 8}px`;
-                document.body.appendChild(blood);
-                
-                // Animate
-                setTimeout(() => {
-                    blood.style.transform = 'scale(2)';
-                    blood.style.opacity = '0';
-                }, 10);
-                
-                // Remove after animation
-                setTimeout(() => {
-                    blood.remove();
-                }, 500);
-            }
-        });
-    </script>
+    <script src="script.js"></script> 
 </body>
 </html>
