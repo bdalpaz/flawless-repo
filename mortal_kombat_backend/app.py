@@ -217,6 +217,56 @@ def get_fatalities():
     finally:
         conn.close()
 
+@app.route('/api/armas', methods=['GET'])
+def get_armas():
+    conn = get_db_connection()
+    try:
+        # Pega os parâmetros 'limit' e 'offset' da URL, com valores padrão
+        limit = request.args.get('limit', 9, type=int) # Padrão: 9 armas por vez (3 colunas * 3 linhas)
+        offset = request.args.get('offset', 0, type=int) # Padrão: Começa do 0
+
+        # Consulta a tabela 'arma'
+        armas_cursor = conn.execute(f'''
+            SELECT
+                id_arma,
+                nome,
+                tipo,
+                raridade,
+                alcance,
+                dano,
+                COUNT(*) OVER() AS total_armas_bd -- Conta o total de armas para paginação
+            FROM
+                arma
+            ORDER BY
+                nome ASC -- Você pode mudar para RANDOM() se quiser ordem aleatória, ou id_arma ASC
+            LIMIT {limit} OFFSET {offset}
+        ''').fetchall()
+
+        armas = []
+        total_armas = 0
+        if armas_cursor: # Pega o total do primeiro registro (já que COUNT(*) OVER() retorna o mesmo para todos)
+            total_armas = armas_cursor[0]['total_armas_bd']
+
+        for a_row in armas_cursor:
+            armas.append({
+                'id': a_row['id_arma'],
+                'nome': a_row['nome'],
+                'tipo': a_row['tipo'],
+                'raridade': a_row['raridade'],
+                'alcance': a_row['alcance'],
+                'dano': a_row['dano']
+            })
+        
+        # Retorna os dados das armas e o total para o frontend
+        return jsonify({'armas': armas, 'total': total_armas})
+
+    except Exception as e:
+        print(f"Erro no backend ao buscar armas: {e}")
+        return jsonify({"error": f"Erro ao buscar armas no banco de dados: {str(e)}"}), 500
+    finally:
+        conn.close()
+
+
 
 # Rodar a aplicação
 if __name__ == '__main__':
