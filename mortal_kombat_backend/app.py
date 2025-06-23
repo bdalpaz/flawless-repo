@@ -79,8 +79,8 @@ def get_personagens():
                 p.nome
             ORDER BY
                 RANDOM() 
-            LIMIT {limit} OFFSET {offset}
-        ''').fetchall()
+            LIMIT ? OFFSET ?
+            ''', (limit, offset)).fetchall()
 
         personagens = []
         total_personagens = 0 
@@ -88,6 +88,7 @@ def get_personagens():
             total_personagens = personagens_cursor[0]['total_personagens_unicos_bd']
 
         for p_row in personagens_cursor:
+            # Adiciona os dados do personagem à lista
             personagens.append({
                 'id': p_row['id_personagem'],
                 'nome': p_row['nome'],
@@ -97,7 +98,6 @@ def get_personagens():
                 'alinhamento': p_row['alinhamento'],
                 'habilidade_principal': p_row['habilidade_principal_nome']
             })
-        
         
         return jsonify({'personagens': personagens, 'total': total_personagens})
 
