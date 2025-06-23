@@ -1,5 +1,3 @@
-# app.py
-
 from flask import Flask, jsonify, request
 from flask_cors import CORS
 import sqlite3
@@ -10,10 +8,9 @@ app = Flask(__name__)
 CORS(app) 
 
 # --- Configuração do Banco de Dados ---
-# O caminho está correto para a sua estrutura de pastas
 DATABASE = os.path.join(os.path.dirname(__file__), os.path.pardir, 'mortal_kombat.db') 
 
-# Função para obter uma conexão com o banco de dados
+# Função para obter a conexão com o banco de dados
 def get_db_connection():
     try:
         conn = sqlite3.connect(DATABASE)
@@ -29,7 +26,6 @@ def get_db_connection():
 @app.route('/api/jogos', methods=['GET'])
 def get_jogos():
     conn = get_db_connection()
-    # REMOVIDO: O print de depuração das tabelas
     try:
         jogos_cursor = conn.execute('''
             SELECT 
@@ -69,20 +65,16 @@ def get_personagens():
 
         personagens_cursor = conn.execute(f'''
                SELECT
-                MIN(p.id_personagem) AS id_personagem, -- Use o alias 'p' aqui também
+                MIN(p.id_personagem) AS id_personagem, 
                 p.nome,
                 MAX(p.raca) AS raca,
                 MAX(p.status_vida) AS status_vida,
                 MAX(p.origem) AS origem,
                 MAX(p.alinhamento) AS alinhamento,
                 MAX(p.habilidade_principal) AS habilidade_principal_nome,
-                -- A contagem do total é um pouco mais complexa com GROUP BY e OVER(),
-                -- vamos separá-la para evitar conflitos, ou simplificar o COUNT OVER.
-                -- Para este erro específico, o problema está nas colunas selecionadas.
-                -- Vamos manter o COUNT(*) OVER() mas garantir que as outras colunas estejam bem definidas.
                 (SELECT COUNT(DISTINCT nome) FROM personagem) AS total_personagens_unicos_bd -- Alternativa mais segura para o total único
             FROM
-                personagem p -- Dando um alias 'p' para a tabela
+                personagem p 
             GROUP BY
                 p.nome
             ORDER BY
@@ -93,7 +85,6 @@ def get_personagens():
         personagens = []
         total_personagens = 0 
         if personagens_cursor: 
-            # Pega o total do primeiro registro (que é o mesmo para todos)
             total_personagens = personagens_cursor[0]['total_personagens_unicos_bd']
 
         for p_row in personagens_cursor:
@@ -132,7 +123,7 @@ def get_personagem_detalhes(personagem_id):
                 p.status_vida, 
                 p.origem, 
                 p.alinhamento,
-                p.habilidade_principal, -- ADICIONADO: Seleciona a habilidade principal
+                p.habilidade_principal, 
                 p.id_fatality, 
                 m.nome AS nome_mundo, 
                 m.tipo AS tipo_mundo,
@@ -177,8 +168,8 @@ def get_personagem_detalhes(personagem_id):
 def get_fatalities():
     conn = get_db_connection()
     try:
-        limit = request.args.get('limit', 9, type=int) # Padrão: 9 fatalities por vez
-        offset = request.args.get('offset', 0, type=int) # Padrão: Começa do 0
+        limit = request.args.get('limit', 9, type=int) 
+        offset = request.args.get('offset', 0, type=int)
 
         fatalities_cursor = conn.execute(f'''
             SELECT
@@ -191,7 +182,7 @@ def get_fatalities():
             FROM
                 fatality
             ORDER BY
-                nome ASC -- Ou por id_fatality ASC
+                RANDOM()
             LIMIT {limit} OFFSET {offset}
         ''').fetchall()
 
@@ -222,23 +213,23 @@ def get_armas():
     conn = get_db_connection()
     try:
         # Pega os parâmetros 'limit' e 'offset' da URL, com valores padrão
-        limit = request.args.get('limit', 9, type=int) # Padrão: 9 armas por vez (3 colunas * 3 linhas)
-        offset = request.args.get('offset', 0, type=int) # Padrão: Começa do 0
+        limit = request.args.get('limit', 9, type=int) 
+        offset = request.args.get('offset', 0, type=int)
 
         # Consulta a tabela 'arma'
         armas_cursor = conn.execute(f'''
-            SELECT
+            SELECT 
                 id_arma,
                 nome,
                 tipo,
                 raridade,
                 alcance,
                 dano,
-                COUNT(*) OVER() AS total_armas_bd -- Conta o total de armas para paginação
+                COUNT(*) OVER() AS total_armas_bd 
             FROM
                 arma
-            ORDER BY
-                nome ASC -- Você pode mudar para RANDOM() se quiser ordem aleatória, ou id_arma ASC
+            ORDER BY 
+                RANDOM()
             LIMIT {limit} OFFSET {offset}
         ''').fetchall()
 

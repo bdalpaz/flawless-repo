@@ -82,7 +82,6 @@ const showMoreFatalitiesButton = document.getElementById('showMoreFatalities');
 let currentOffsetArmas = 0;
 const limitPerPageArmas = 6; 
 
-// Elementos DOM para as armas
 const armasLista = document.getElementById('armas-lista');
 const showMoreArmasButton = document.getElementById('showMoreArmas');
 
@@ -92,18 +91,14 @@ console.log('Script.js carregado!');
 document.addEventListener('DOMContentLoaded', function() {
     console.log('DOMContentLoaded disparado!'); 
 
-    // Carregar os primeiros personagens ao carregar a página
     carregarKombatants(true); 
-    // Carregar jogos na timeline
     carregarJogosTimeline();
-    // Carregar fatalities
     carregarFatalities(true);
-    // Carregar armas 
     carregarArmas(true); 
 
     setupModal();
 
-    // Lógica para o efeito de digitação no título
+    //efeito de digitação no título
     const titleElement = document.querySelector('h1');
     if (titleElement) {
         const originalText = titleElement.textContent;
@@ -119,7 +114,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }, 100);
     }
 
-    // Lógica para suavizar rolagem para âncoras
+    //suavizar scroll
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function (e) {
             e.preventDefault();
@@ -129,14 +124,14 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Event Listener para o botão "Mostrar Mais Personagens"
+    //"Mostrar Mais Personagens"
     if (showMoreCharsButton) { 
         showMoreCharsButton.addEventListener('click', function() {
             carregarKombatants(false); 
         });
     }
 
-    // Event Listener para o botão "Mostrar Mais Fatalities"
+    //"Mostrar Mais Fatalities"
     if (showMoreFatalitiesButton) {
         showMoreFatalitiesButton.addEventListener('click', function() {
             carregarFatalities(false);
@@ -145,7 +140,7 @@ document.addEventListener('DOMContentLoaded', function() {
         console.warn('showMoreFatalitiesButton NÃO foi encontrado. Verifique o ID no HTML.');
     }
 
-    // Event Listener para o botão "Mostrar Mais Armas"
+    //"Mostrar Mais Armas"
     if (showMoreArmasButton) {
         showMoreArmasButton.addEventListener('click', function() {
             carregarArmas(false);
@@ -155,8 +150,6 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 
-
-// --- Funções de Carregamento de Dados ---
 
 async function carregarKombatants(isInitialLoad) {
     if (isInitialLoad) {
@@ -202,7 +195,7 @@ async function carregarKombatants(isInitialLoad) {
             const card = document.createElement('div');
             card.className = 'character-card bg-gray-800 rounded-lg overflow-hidden border border-red-900 cursor-pointer transition duration-300';
             
-            const imageUrl = characterImages[personagem.nome] || 'assets/images/placeholder-personagem.png'; // Fallback local
+            const imageUrl = characterImages[personagem.nome] || 'assets/images/placeholder-personagem.png';
 
             card.innerHTML = `
                 <div class="h-48 md:h56 overflow-hidden">
@@ -296,37 +289,37 @@ async function carregarFatalities(isInitialLoad) {
          showMoreFatalitiesButton.style.display = 'none';
       }
      } else {
-        if (showMoreFatalitiesButton) {
-            showMoreFatalitiesButton.disabled = true;
-            showMoreFatalitiesButton.innerHTML = 'CARREGANDO... <i class="fas fa-spinner fa-spin ml-2"></i>';
-        }
-    }
+         if (showMoreFatalitiesButton) {
+            showMoreFatalitiesButton.disabled = true;
+            showMoreFatalitiesButton.innerHTML = 'CARREGANDO... <i class="fas fa-spinner fa-spin ml-2"></i>';
+         }
+    }
 
-    try {
-        const response = await fetch(`http://127.0.0.1:5000/api/fatalities?limit=${limitPerPageFatalities}&offset=${currentOffsetFatalities}`);
-        if (!response.ok) {
-            throw new Error(`Erro ao buscar fatalities: ${response.statusText}`);
-        }
-        const data = await response.json();
-        const fatalities = data.fatalities;
-        const totalFatalities = data.total;
+    try {
+     const response = await fetch(`http://127.0.0.1:5000/api/fatalities?limit=${limitPerPageFatalities}&offset=${currentOffsetFatalities}`);
+        if (!response.ok) {
+         throw new Error(`Erro ao buscar fatalities: ${response.statusText}`);
+        }
+        const data = await response.json();
+        const fatalities = data.fatalities;
+        const totalFatalities = data.total;
 
-        if (isInitialLoad) {
-            fatalitiesLista.innerHTML = ''; 
-        }
+        if (isInitialLoad) {
+            fatalitiesLista.innerHTML = ''; 
+        }
 
-        if (fatalities.length === 0 && isInitialLoad) {
-            fatalitiesLista.innerHTML = '<p class="col-span-full text-center text-gray-400">Nenhum Fatality encontrado.</p>';
-            if (showMoreFatalitiesButton) {
-                showMoreFatalitiesButton.style.display = 'none';
-            }
-            return;
-        } else if (fatalities.length === 0 && !isInitialLoad) {
-            if (showMoreFatalitiesButton) {
-                showMoreFatalitiesButton.style.display = 'none';
-            }
-            return;
-        }
+        if (fatalities.length === 0 && isInitialLoad) {
+            fatalitiesLista.innerHTML = '<p class="col-span-full text-center text-gray-400">Nenhum Fatality encontrado.</p>';
+             if (showMoreFatalitiesButton) {
+                showMoreFatalitiesButton.style.display = 'none';
+            }
+        return;
+        } else if (fatalities.length === 0 && !isInitialLoad) {
+            if (showMoreFatalitiesButton) {
+                showMoreFatalitiesButton.style.display = 'none';
+            }
+            return;
+    }
            fatalities.forEach(fatality => {
             const card = document.createElement('div');
             card.className = 'bg-gray-800 rounded-lg p-4 shadow-lg border border-red-700'; // Mantendo p-4
@@ -338,30 +331,27 @@ async function carregarFatalities(isInitialLoad) {
         });
         
 
-        currentOffsetFatalities += fatalities.length;
+        currentOffsetFatalities += fatalities.length;
 
-        if (showMoreFatalitiesButton) {
-            if (currentOffsetFatalities < totalFatalities) {
-                showMoreFatalitiesButton.style.display = 'block';
-                showMoreFatalitiesButton.disabled = false;
-                showMoreFatalitiesButton.innerHTML = 'MOSTRAR MAIS FATALITIES <i class="fas fa-chevron-down ml-2"></i>';
-            } else {
-                showMoreFatalitiesButton.style.display = 'none';
-            }
-        }
+        if (showMoreFatalitiesButton) {
+            if (currentOffsetFatalities < totalFatalities) {
+                showMoreFatalitiesButton.style.display = 'block';
+                showMoreFatalitiesButton.disabled = false;
+                showMoreFatalitiesButton.innerHTML = 'MOSTRAR MAIS FATALITIES <i class="fas fa-chevron-down ml-2"></i>';
+             } else {
+                 showMoreFatalitiesButton.style.display = 'none';
+             }
+         }
 
-    } catch (error) {
-        console.error('Erro ao carregar Fatalities:', error);
-        fatalitiesLista.innerHTML = `<p class="col-span-full text-center text-red-500">Erro ao carregar fatalities: ${error.message}</p>`;
-        if (showMoreFatalitiesButton) {
-            showMoreFatalitiesButton.style.display = 'none';
-        }
-    }
+     } catch (error) {
+         console.error('Erro ao carregar Fatalities:', error);
+        fatalitiesLista.innerHTML = `<p class="col-span-full text-center text-red-500">Erro ao carregar fatalities: ${error.message}</p>`;
+         if (showMoreFatalitiesButton) {
+         showMoreFatalitiesButton.style.display = 'none';
+     }
+     }
 }
 
-// script.js
-
-// ... (código antes da função carregarArmas) ...
 
 async function carregarArmas(isInitialLoad) {
     console.log('Função carregarArmas chamada. isInitialLoad:', isInitialLoad); // DEBUG
@@ -447,161 +437,159 @@ async function carregarArmas(isInitialLoad) {
     }
 }
 
-// ... (resto do script.js) ...
-
 // --- Lógica do Modal de Personagem ---
 
 function setupModal() {
-    const modal = document.getElementById('characterModal');
-    const closeModalBtn = document.getElementById('closeModal');
-    const modalContent = modal.querySelector('.modal-content');
+    const modal = document.getElementById('characterModal');
+    const closeModalBtn = document.getElementById('closeModal');
+    const modalContent = modal.querySelector('.modal-content');
 
-    closeModalBtn.addEventListener('click', () => {
-        modalContent.classList.remove('scale-100', 'opacity-100');
-        modalContent.classList.add('scale-95', 'opacity-0');
-        setTimeout(() => modal.classList.add('hidden'), 300);
-    });
+    closeModalBtn.addEventListener('click', () => {
+        modalContent.classList.remove('scale-100', 'opacity-100');
+        modalContent.classList.add('scale-95', 'opacity-0');
+        setTimeout(() => modal.classList.add('hidden'), 300);
+    });
 
-    modal.addEventListener('click', (e) => {
-        if (e.target === modal) {
-            modalContent.classList.remove('scale-100', 'opacity-100');
-            modalContent.classList.add('scale-95', 'opacity-0');
-            setTimeout(() => modal.classList.add('hidden'), 300);
-        }
-    });
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+            modalContent.classList.remove('scale-100', 'opacity-100');
+            modalContent.classList.add('scale-95', 'opacity-0');
+            setTimeout(() => modal.classList.add('hidden'), 300);
+        }
+     });
 }
 
 async function openCharacterModal(id_personagem) {
-    const modal = document.getElementById('characterModal');
-    const modalContent = modal.querySelector('.modal-content');
-    const modalImage = document.getElementById('modalCharacterImage');
-    const modalName = document.getElementById('modalCharacterName');
-    const modalBio = document.getElementById('modalCharacterBio');
-    const modalRaceOriginAlign = document.getElementById('modalRaceOriginAlign');
-    const modalAgeStatus = document.getElementById('modalAgeStatus');
-    const modalCla = document.getElementById('modalCla');
-    const modalMundo = document.getElementById('modalMundo');
-    const modalArma = document.getElementById('modalArma');
-    const modalTransformacao = document.getElementById('modalTransformacao');
-    const modalMoves = document.getElementById('modalCharacterMoves');
-    const modalFatality = document.getElementById('modalCharacterFatality');
+    const modal = document.getElementById('characterModal');
+    const modalContent = modal.querySelector('.modal-content');
+    const modalImage = document.getElementById('modalCharacterImage');
+    const modalName = document.getElementById('modalCharacterName');
+    const modalBio = document.getElementById('modalCharacterBio');
+    const modalRaceOriginAlign = document.getElementById('modalRaceOriginAlign');
+    const modalAgeStatus = document.getElementById('modalAgeStatus');
+    const modalCla = document.getElementById('modalCla');
+    const modalMundo = document.getElementById('modalMundo');
+    const modalArma = document.getElementById('modalArma');
+    const modalTransformacao = document.getElementById('modalTransformacao');
+    const modalMoves = document.getElementById('modalCharacterMoves');
+    const modalFatality = document.getElementById('modalCharacterFatality');
 
 
 // Limpa conteúdo antigo
-    modalImage.src = '';
-    modalName.textContent = 'Carregando...';
-    modalBio.textContent = '';
-    modalRaceOriginAlign.textContent = '';
-    modalAgeStatus.textContent = '';
-    modalCla.textContent = '';
-    modalMundo.textContent = '';
-    modalArma.textContent = '';
-    modalTransformacao.textContent = '';
-    modalMoves.innerHTML = '<li>Carregando habilidade principal...</li>';
-    modalFatality.textContent = 'Carregando fatality...';
-    modal.classList.remove('hidden');
+    modalImage.src = '';
+    modalName.textContent = 'Carregando...';
+    modalBio.textContent = '';
+    modalRaceOriginAlign.textContent = '';
+    modalAgeStatus.textContent = '';
+    modalCla.textContent = '';
+    modalMundo.textContent = '';
+    modalArma.textContent = '';
+    modalTransformacao.textContent = '';
+    modalMoves.innerHTML = '<li>Carregando habilidade principal...</li>';
+    modalFatality.textContent = 'Carregando fatality...';
+    modal.classList.remove('hidden');
 
-    setTimeout(() => {
-        modalContent.classList.remove('scale-95', 'opacity-0');
-        modalContent.classList.add('scale-100', 'opacity-100');
-    }, 10);
+    setTimeout(() => {
+        modalContent.classList.remove('scale-95', 'opacity-0');
+        modalContent.classList.add('scale-100', 'opacity-100');
+    }, 10);
 
 try {
-        const response = await fetch(`http://127.0.0.1:5000/api/personagens/${id_personagem}`);
-        if (!response.ok) {
-            throw new Error(`Erro ao buscar detalhes do personagem: ${response.statusText}`);
-        }
-        const characterData = await response.json();
+        const response = await fetch(`http://127.0.0.1:5000/api/personagens/${id_personagem}`);
+        if (!response.ok) {
+            throw new Error(`Erro ao buscar detalhes do personagem: ${response.statusText}`);
+        }
+        const characterData = await response.json();
 
 
-        const imageUrl = characterImages[characterData.nome] || 'https://via.placeholder.com/250x300/333/666?text=Image+Missing';
-        modalImage.src = imageUrl;
-        modalImage.alt = characterData.nome;
-        modalName.textContent = characterData.nome;
+        const imageUrl = characterImages[characterData.nome] || 'https://via.placeholder.com/250x300/333/666?text=Image+Missing';
+        modalImage.src = imageUrl;
+        modalImage.alt = characterData.nome;
+        modalName.textContent = characterData.nome;
 
-        modalRaceOriginAlign.innerHTML = `<span class="font-bold">Raça:</span> ${characterData.raca || 'N/A'} | <span class="font-bold">Origem:</span> ${characterData.origem || 'N/A'} | <span class="font-bold">Alinhamento:</span> ${characterData.alinhamento || 'N/A'}`;
-        modalAgeStatus.innerHTML = `<span class="font-bold">Idade:</span> ${characterData.idade || 'N/A'} | <span class="font-bold">Status:</span> ${characterData.status_vida || 'N/A'}`;
+        modalRaceOriginAlign.innerHTML = `<span class="font-bold">Raça:</span> ${characterData.raca || 'N/A'} | <span class="font-bold">Origem:</span> ${characterData.origem || 'N/A'} | <span class="font-bold">Alinhamento:</span> ${characterData.alinhamento || 'N/A'}`;
+        modalAgeStatus.innerHTML = `<span class="font-bold">Idade:</span> ${characterData.idade || 'N/A'} | <span class="font-bold">Status:</span> ${characterData.status_vida || 'N/A'}`;
 
-        if (characterData.nome_cla) {
-            modalCla.innerHTML = `<span class="font-bold">Clã:</span> ${characterData.nome_cla || 'N/A'} ${characterData.simbolo_cla ? `<img src="https://example.com/assets/${characterData.simbolo_cla}" alt="Símbolo" class="inline-block h-6 ml-2">` : ''}`;
-        } else {
-            modalCla.textContent = 'Clã: N/A';
-        }
+         if (characterData.nome_cla) {
+            modalCla.innerHTML = `<span class="font-bold">Clã:</span> ${characterData.nome_cla || 'N/A'} ${characterData.simbolo_cla ? `<img src="https://example.com/assets/${characterData.simbolo_cla}" alt="Símbolo" class="inline-block h-6 ml-2">` : ''}`;
+        } else {
+            modalCla.textContent = 'Clã: N/A';
+        }
 
-        if (characterData.nome_mundo) {
-            modalMundo.innerHTML = `<span class="font-bold">Mundo:</span> ${characterData.nome_mundo || 'N/A'} (${characterData.tipo_mundo || 'N/A'})`;
-        } else {
-            modalMundo.textContent = 'Mundo: N/A';
-        }
+        if (characterData.nome_mundo) {
+            modalMundo.innerHTML = `<span class="font-bold">Mundo:</span> ${characterData.nome_mundo || 'N/A'} (${characterData.tipo_mundo || 'N/A'})`;
+        } else {
+            modalMundo.textContent = 'Mundo: N/A';
+        }
 
 
-        if (characterData.nome_arma) {
-            modalArma.innerHTML = `<span class="font-bold">Arma:</span> ${characterData.nome_arma || 'N/A'} (Tipo: ${characterData.tipo_arma || 'N/A'}, Dano: ${characterData.dano_arma || 'N/A'})`;
-        } else {
-            modalArma.textContent = 'Arma: N/A';
-        }
+        if (characterData.nome_arma) {
+            modalArma.innerHTML = `<span class="font-bold">Arma:</span> ${characterData.nome_arma || 'N/A'} (Tipo: ${characterData.tipo_arma || 'N/A'}, Dano: ${characterData.dano_arma || 'N/A'})`;
+        } else {
+         modalArma.textContent = 'Arma: N/A';
+        }
 
-        if (characterData.tipo_transformacao || characterData.forma_transformacao) {
-            modalTransformacao.innerHTML = `<span class="font-bold">Transformação:</span> ${characterData.tipo_transformacao || 'N/A'} - ${characterData.forma_transformacao || 'N/A'}`;
-        } else {
-            modalTransformacao.textContent = 'Transformação: N/A';
-        }
+        if (characterData.tipo_transformacao || characterData.forma_transformacao) {
+        modalTransformacao.innerHTML = `<span class="font-bold">Transformação:</span> ${characterData.tipo_transformacao || 'N/A'} - ${characterData.forma_transformacao || 'N/A'}`;
+        } else {
+            modalTransformacao.textContent = 'Transformação: N/A';
+         }
 
-        modalMoves.innerHTML = ''; // Limpa o conteúdo anterior
-        if (characterData.habilidade_principal) {
-            modalMoves.innerHTML = `
-                <li class="flex items-start text-gray-400">
-                    <span class="text-red-500 mr-2">•</span>
-                    <span>${characterData.habilidade_principal}</span>
-                </li>
-            `;
-        } else {
-            modalMoves.innerHTML = '<li>Nenhuma habilidade principal encontrada.</li>';
-        }
+        modalMoves.innerHTML = ''; // Limpa o conteúdo anterior
+        if (characterData.habilidade_principal) {
+             modalMoves.innerHTML = `
+                 <li class="flex items-start text-gray-400">
+                    <span class="text-red-500 mr-2">•</span>
+                    <span>${characterData.habilidade_principal}</span>
+                </li>
+     `;
+        } else {
+            modalMoves.innerHTML = '<li>Nenhuma habilidade principal encontrada.</li>';
+        }
 
-        if (characterData.fatality_detalhes && characterData.fatality_detalhes.nome) {
-            modalFatality.innerHTML = `
-                <span class="font-bold">Nome:</span> ${characterData.fatality_detalhes.nome || 'N/A'} |
-                <span class="font-bold">Brutalidade:</span> ${characterData.fatality_detalhes.brutalidade || 'N/A'} |
-                <span class="font-bold">Tipo:</span> ${characterData.fatality_detalhes.tipo || 'N/A'} |
-                <span class="font-bold">Origem:</span> ${characterData.fatality_detalhes.origem || 'N/A'}
-            `;
-        } else {
-            modalFatality.textContent = 'Nenhuma Fatality associada ou encontrada.';
-        }
+        if (characterData.fatality_detalhes && characterData.fatality_detalhes.nome) {
+            modalFatality.innerHTML = `
+                <span class="font-bold">Nome:</span> ${characterData.fatality_detalhes.nome || 'N/A'} |
+                <span class="font-bold">Brutalidade:</span> ${characterData.fatality_detalhes.brutalidade || 'N/A'} |
+                <span class="font-bold">Tipo:</span> ${characterData.fatality_detalhes.tipo || 'N/A'} |
+                <span class="font-bold">Origem:</span> ${characterData.fatality_detalhes.origem || 'N/A'}
+            `;
+        } else {
+        modalFatality.textContent = 'Nenhuma Fatality associada ou encontrada.';
+     }
 
- 
-    } catch (error) {
-        console.error('Erro ao carregar detalhes do personagem:', error);
-        modalName.textContent = 'Erro ao Carregar';
-        modalRaceOriginAlign.textContent = `Não foi possível carregar os detalhes: ${error.message}`;
-        modalAgeStatus.textContent = '';
-        modalCla.textContent = '';
-        modalMundo.textContent = '';
-        modalArma.textContent = '';
-        modalTransformacao.textContent = '';
-        modalMoves.innerHTML = '<li>Erro ao carregar habilidade.</li>';
-        modalFatality.textContent = 'Erro ao carregar fatality.';
-    }
+
+    } catch (error) {
+        console.error('Erro ao carregar detalhes do personagem:', error);
+        modalName.textContent = 'Erro ao Carregar';
+        modalRaceOriginAlign.textContent = `Não foi possível carregar os detalhes: ${error.message}`;
+        modalAgeStatus.textContent = '';
+        modalCla.textContent = '';
+        modalMundo.textContent = '';
+        modalArma.textContent = '';
+        modalTransformacao.textContent = '';
+        modalMoves.innerHTML = '<li>Erro ao carregar habilidade.</li>';
+        modalFatality.textContent = 'Erro ao carregar fatality.';
+    }
 }
 
 document.addEventListener('click', function(e) {
-    const targetButton = e.target.closest('button');
-    const targetLink = e.target.closest('a');
+    const targetButton = e.target.closest('button');
+    const targetLink = e.target.closest('a');
 
-    if (targetButton || targetLink) {
-        const blood = document.createElement('div');
-        blood.className = 'absolute w-4 h-4 bg-red-600 rounded-full pointer-events-none opacity-70';
-        blood.style.left = `${e.clientX - 8}px`;
-        blood.style.top = `${e.clientY - 8}px`;
-        document.body.appendChild(blood);
+    if (targetButton || targetLink) {
+        const blood = document.createElement('div');
+        blood.className = 'absolute w-4 h-4 bg-red-600 rounded-full pointer-events-none opacity-70';
+        blood.style.left = `${e.clientX - 8}px`;
+        blood.style.top = `${e.clientY - 8}px`;
+        document.body.appendChild(blood);
 
-        setTimeout(() => {
-            blood.style.transform = 'scale(2)';
-            blood.style.opacity = '0';
-        }, 10);
-        setTimeout(() => {
-            blood.remove();
-        }, 500);
-    }
+        setTimeout(() => {
+            blood.style.transform = 'scale(2)';
+            blood.style.opacity = '0';
+     }, 10);
+        setTimeout(() => {
+        blood.remove();
+     }, 500);
+    }
 });
