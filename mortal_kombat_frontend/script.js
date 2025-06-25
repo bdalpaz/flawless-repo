@@ -78,7 +78,7 @@ const showMoreCharsButton = document.getElementById('showMoreChars');
 
 // Variáveis de estado para a paginação de fatalities
 let currentOffsetFatalities = 0;
-const limitPerPageFatalities = 3; 
+const limitPerPageFatalities = 5; 
 
 // Elementos DOM para os fatalities
 const fatalitiesLista = document.getElementById('fatalities-lista');
@@ -343,7 +343,7 @@ async function carregarFatalities(isInitialLoad) {
 
         fatalities.forEach(fatality => {
             const card = document.createElement('div');
-            card.className = 'bg-gray-800 rounded-lg p-3 shadow-lg border border-red-700 w-5/5'; 
+            card.className = 'bg-gray-800 rounded-lg p-5 shadow-lg border border-red-700 w-5/6'; 
             card.innerHTML = `
                 <h3 class="text-xl font-bold blood-text mb-2">${fatality.nome || 'N/A'}</h3> 
                 <p class="text-gray-300 text-sm mb-2">Tipo: ${fatality.tipo || 'N/A'}</p> <p class="text-gray-300 text-sm mb-2">Brutalidade: ${fatality.brutalidade || 'N/A'}</p> <p class="text-gray-300 text-sm">Origem: ${fatality.origem || 'N/A'}</p> 
