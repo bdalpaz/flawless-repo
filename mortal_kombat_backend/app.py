@@ -20,7 +20,7 @@ def get_db_connection():
         print(f"Erro ao conectar ao banco de dados: {e}")
         raise
 
-# --- Rotas da API ---
+# --- Rotas ---
 
 
 @app.route('/api/jogos', methods=['GET'])
@@ -62,8 +62,8 @@ def get_personagens():
         limit = request.args.get('limit', 8, type=int)
         offset = request.args.get('offset', 0, type=int)
 
-        personagens_cursor = conn.execute('''
-                SELECT
+        personagens_cursor = conn.execute(f'''
+            SELECT
                 MIN(p.id_personagem) AS id_personagem,
                 p.nome,
                 MAX(p.raca) AS raca,
@@ -71,15 +71,19 @@ def get_personagens():
                 MAX(p.origem) AS origem,
                 MAX(p.alinhamento) AS alinhamento,
                 MAX(p.habilidade_principal) AS habilidade_principal_nome,
+                MAX(m.nome) AS nome_mundo,
+                MAX(m.tipo) AS tipo_mundo,
                 (SELECT COUNT(DISTINCT nome) FROM personagem) AS total_personagens_unicos_bd
-                FROM
+            FROM
                 personagem p
-                GROUP BY
+            LEFT JOIN
+                mundo m ON p.id_mundo = m.id_mundo
+            GROUP BY
                 p.nome
-                ORDER BY
-                p.nome ASC 
-                LIMIT ? OFFSET ?
-                ''', (limit, offset)).fetchall()
+            ORDER BY
+                RANDOM()
+            LIMIT {limit} OFFSET {offset}
+        ''').fetchall()
 
         personagens = []
         total_personagens = 0
@@ -94,7 +98,9 @@ def get_personagens():
                 'status_vida': p_row['status_vida'],
                 'origem': p_row['origem'],
                 'alinhamento': p_row['alinhamento'],
-                'habilidade_principal': p_row['habilidade_principal_nome']
+                'habilidade_principal': p_row['habilidade_principal_nome'],
+                'nome_mundo': p_row['nome_mundo'],
+                'tipo_mundo': p_row['tipo_mundo']  
             })
 
         return jsonify({'personagens': personagens, 'total': total_personagens})
@@ -102,61 +108,6 @@ def get_personagens():
     except Exception as e:
         print(f"Erro no backend ao buscar personagens: {e}")
         return jsonify({"error": f"Erro ao buscar personagens no banco de dados: {str(e)}"}), 500
-    finally:
-        conn.close()
-
-
-@app.route('/api/personagens/<int:personagem_id>', methods=['GET'])
-def get_personagem_detalhes(personagem_id):
-    conn = get_db_connection()
-    try:
-        personagem_info = conn.execute(
-            '''
-            SELECT
-                p.id_personagem,
-                p.nome,
-                p.raca,
-                p.idade,
-                p.status_vida,
-                p.origem,
-                p.alinhamento,
-                p.habilidade_principal,
-                p.id_fatality,
-                m.nome AS nome_mundo,
-                m.tipo AS tipo_mundo,
-                t.tipo AS tipo_transformacao,
-                t.forma AS forma_transformacao,
-                c.nome AS nome_cla,
-                c.simbolo AS simbolo_cla,
-                a.nome AS nome_arma,
-                a.tipo AS tipo_arma,
-                a.dano AS dano_arma
-            FROM
-                personagem p
-            LEFT JOIN
-                mundo m ON p.id_mundo = m.id_mundo
-            LEFT JOIN
-                transformacao t ON p.id_transformacao = t.id_transformacao
-            LEFT JOIN
-                cla c ON p.id_cla = c.id_cla
-            LEFT JOIN
-                arma a ON p.id_arma = a.id_arma
-            WHERE
-                p.id_personagem = ?
-            ''', (personagem_id,)
-        ).fetchone()
-
-        if personagem_info is None:
-            return jsonify({'message': 'Personagem não encontrado'}), 404
-
-        personagem_data = dict(personagem_info)
-        personagem_data['id'] = personagem_data.pop('id_personagem')
-
-        return jsonify(personagem_data)
-
-    except Exception as e:
-        print(f"Erro no backend ao buscar detalhes do personagem: {e}")
-        return jsonify({"error": f"Erro ao buscar detalhes do personagem no banco de dados: {str(e)}"}), 500
     finally:
         conn.close()
 
