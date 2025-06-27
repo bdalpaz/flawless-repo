@@ -73,11 +73,15 @@ def get_personagens():
                 MAX(p.habilidade_principal) AS habilidade_principal_nome,
                 MAX(m.nome) AS nome_mundo,
                 MAX(m.tipo) AS tipo_mundo,
+                MAX(t.tipo) AS tipo_transformacao,  -- ADICIONADO: Tipo da transformação
+                MAX(t.forma) AS forma_transformacao, -- ADICIONADO: Forma da transformação
                 (SELECT COUNT(DISTINCT nome) FROM personagem) AS total_personagens_unicos_bd
             FROM
                 personagem p
             LEFT JOIN
                 mundo m ON p.id_mundo = m.id_mundo
+            LEFT JOIN
+                transformacao t ON p.id_transformacao = t.id_transformacao -- ADICIONADO: Junção com a tabela transformação
             GROUP BY
                 p.nome
             ORDER BY
@@ -100,7 +104,9 @@ def get_personagens():
                 'alinhamento': p_row['alinhamento'],
                 'habilidade_principal': p_row['habilidade_principal_nome'],
                 'nome_mundo': p_row['nome_mundo'],
-                'tipo_mundo': p_row['tipo_mundo']  
+                'tipo_mundo': p_row['tipo_mundo'],
+                'tipo_transformacao': p_row['tipo_transformacao'], 
+                'forma_transformacao': p_row['forma_transformacao']
             })
 
         return jsonify({'personagens': personagens, 'total': total_personagens})
@@ -119,18 +125,37 @@ def get_fatalities():
         limit = request.args.get('limit', 9, type=int)
         offset = request.args.get('offset', 0, type=int)
 
-        fatalities_cursor = conn.execute('''
+        # CORREÇÃO PRINCIPAL AQUI PARA DUPLICAÇÃO E PERSONAGEM RESPONSÁVEL
+        # Usamos uma CTE (Common Table Expression) ou subconsulta para pegar o personagem principal
+        # e depois fazemos a junção para garantir unicidade do Fatality.
+        fatalities_cursor = conn.execute(f'''
+            WITH FatalityPersonagem AS (
+                SELECT
+                    f.id_fatality,
+                    f.nome,
+                    f.tipo,
+                    f.brutalidade,
+                    f.origem,
+                    MIN(p.nome) AS nome_personagem_responsavel -- Pega o primeiro personagem que tem esse fatality
+                FROM
+                    fatality f
+                LEFT JOIN
+                    personagem p ON f.id_fatality = p.id_fatality
+                GROUP BY
+                    f.id_fatality, f.nome, f.tipo, f.brutalidade, f.origem
+            )
             SELECT
-                id_fatality,
-                nome,
-                tipo,
-                brutalidade,
-                origem,
-                COUNT(*) OVER() AS total_fatalities_bd
+                fp.id_fatality,
+                fp.nome,
+                fp.tipo,
+                fp.brutalidade,
+                fp.origem,
+                fp.nome_personagem_responsavel,
+                (SELECT COUNT(*) FROM Fatality) AS total_fatalities_bd -- Conta o total de fatalities na tabela Fatality (sem junções)
             FROM
-                fatality
+                FatalityPersonagem fp
             ORDER BY
-                id_fatality ASC -- Ordena por ID para consistência
+                fp.nome ASC -- Ordena por nome do fatality (ou RANDOM() se preferir)
             LIMIT ? OFFSET ?
         ''', (limit, offset)).fetchall()
 
@@ -145,9 +170,10 @@ def get_fatalities():
                 'nome': f_row['nome'],
                 'tipo': f_row['tipo'],
                 'brutalidade': f_row['brutalidade'],
-                'origem': f_row['origem']
+                'origem': f_row['origem'],
+                'personagem_responsavel': f_row['nome_personagem_responsavel']
             })
-
+        
         return jsonify({'fatalities': fatalities, 'total': total_fatalities})
 
     except Exception as e:
@@ -156,7 +182,6 @@ def get_fatalities():
     finally:
         conn.close()
 
-
 @app.route('/api/armas', methods=['GET'])
 def get_armas():
     conn = get_db_connection()
@@ -164,30 +189,32 @@ def get_armas():
         limit = request.args.get('limit', 9, type=int)
         offset = request.args.get('offset', 0, type=int)
 
-        
-        armas_cursor = conn.execute('''
+        armas_cursor = conn.execute(f'''
             SELECT
-                MIN(id_arma) AS id_arma, 
-                nome,
-                MAX(tipo) AS tipo, -- Pega um tipo representativo
-                MAX(raridade) AS raridade, -- Pega uma raridade representativa
-                MAX(alcance) AS alcance, -- Pega um alcance representativo
-                MAX(dano) AS dano, -- Pega um dano representativo
-                (SELECT COUNT(DISTINCT nome) FROM arma) AS total_armas_unicas_bd 
+                a.id_arma,
+                a.nome,
+                a.tipo,
+                a.raridade,
+                a.alcance,
+                a.dano,
+                MIN(p.nome) AS nome_personagem_responsavel, -- ADDED: Name of the responsible character
+                (SELECT COUNT(DISTINCT id_arma) FROM arma) AS total_armas_bd -- Count of unique weapons
             FROM
-                arma
+                arma a
+            LEFT JOIN
+                personagem p ON a.id_arma = p.id_arma -- ADDED: Join with personagem table
             GROUP BY
-                nome
+                a.id_arma, a.nome, a.tipo, a.raridade, a.alcance, a.dano -- Group by all non-aggregated columns from arma
             ORDER BY
-                nome ASC 
+                a.nome ASC -- Or RANDOM() if you prefer random order
             LIMIT ? OFFSET ?
         ''', (limit, offset)).fetchall()
 
         armas = []
         total_armas = 0
-        if armas_cursor: 
-            total_armas = armas_cursor[0]['total_armas_unicas_bd']
-
+        if armas_cursor:
+            total_armas = armas_cursor[0]['total_armas_bd']
+ 
         for a_row in armas_cursor:
             armas.append({
                 'id': a_row['id_arma'],
@@ -195,7 +222,8 @@ def get_armas():
                 'tipo': a_row['tipo'],
                 'raridade': a_row['raridade'],
                 'alcance': a_row['alcance'],
-                'dano': a_row['dano']
+                'dano': a_row['dano'],
+                'personagem_responsavel': a_row['nome_personagem_responsavel'] # ADDED to JSON
             })
 
         return jsonify({'armas': armas, 'total': total_armas})
@@ -205,6 +233,7 @@ def get_armas():
         return jsonify({"error": f"Erro ao buscar armas no banco de dados: {str(e)}"}), 500
     finally:
         conn.close()
+
 
 
 # Rodar a aplicação

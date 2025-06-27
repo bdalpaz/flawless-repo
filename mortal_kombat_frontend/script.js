@@ -92,6 +92,14 @@ const limitPerPageArmas = 6;
 const armasLista = document.getElementById('armas-lista');
 const showMoreArmasButton = document.getElementById('showMoreArmas');
 
+let currentOffsetClas = 0;
+const limitPerPageClas = 9; // Quantos clãs carregar por vez
+
+// Elementos DOM para os clãs
+const clasLista = document.getElementById('clas-lista');
+const showMoreClasButton = document.getElementById('showMoreClas');
+
+
 
 console.log('Script.js carregado!'); 
 
@@ -158,6 +166,7 @@ document.addEventListener('DOMContentLoaded', function() {
     } else {
         console.warn('showMoreArmasButton NÃO foi encontrado. Verifique o ID no HTML.');
     }
+
 });
 
 
@@ -203,14 +212,14 @@ async function carregarKombatants(isInitialLoad) {
             return;
         }
 
-        personagens.forEach(personagem => {
+         personagens.forEach(personagem => {
             const card = document.createElement('div');
             card.className = 'character-card bg-gray-800 rounded-lg overflow-hidden border border-red-900 cursor-pointer transition duration-300';
             
-            const imageUrl = characterImages[personagem.nome] || 'assets/images/placeholder-personagem.png'; 
+            const imageUrl = characterImages[personagem.nome] || 'assets/images/placeholder-personagem.png'; // Fallback local
 
             card.innerHTML = `
-                <div class="h-48 md:h-56 overflow-hidden">
+                <div class="h-48 md:h56 overflow-hidden">
                     <img src="${imageUrl}" 
                         alt="${personagem.nome}" 
                         class="w-full h-full object-cover">
@@ -219,11 +228,13 @@ async function carregarKombatants(isInitialLoad) {
                     <h3 class="text-xl font-bold blood-text">${personagem.nome}</h3>
                     ${personagem.habilidade_principal ? `<p class="text-red-400 text-sm mt-1 mb-2">Habilidade: ${personagem.habilidade_principal}</p>` : ''} 
                     <p class="text-gray-400 text-sm mt-2">Raça: ${personagem.raca || 'N/A'}</p>
-                    <p class="text-gray-400 text-sm">Status: ${personagem.status_vida || 'N/A'}</p> 
+                    <p class="text-gray-400 text-sm">Status: ${personagem.status_vida || 'N/A'}</p>
                     ${personagem.origem ? `<p class="text-gray-400 text-sm">Origem: ${personagem.origem}</p>` : ''}
                     ${personagem.alinhamento ? `<p class="text-gray-400 text-sm">Alinhamento: ${personagem.alinhamento}</p>` : ''}
                     ${personagem.nome_mundo ? `<p class="text-gray-400 text-sm">Mundo: ${personagem.nome_mundo}${personagem.tipo_mundo ? ` (${personagem.tipo_mundo})` : ''}</p>` : ''}
-                
+                    <!-- ADICIONADO: Tipo e Forma da Transformação -->
+                    ${(personagem.tipo_transformacao || personagem.forma_transformacao) ? 
+                        `<p class="text-gray-400 text-sm">Transformação: ${personagem.tipo_transformacao || 'N/A'} (${personagem.forma_transformacao || 'N/A'})</p>` : ''}
                 </div>
             `;
             card.addEventListener('click', () => openCharacterModal(personagem.id));
@@ -342,14 +353,16 @@ async function carregarFatalities(isInitialLoad) {
         }
 
         fatalities.forEach(fatality => {
-            const card = document.createElement('div');
-            card.className = 'bg-gray-800 rounded-lg p-5 shadow-lg border border-red-700 w-5/6'; 
-            card.innerHTML = `
-                <h3 class="text-xl font-bold blood-text mb-2">${fatality.nome || 'N/A'}</h3> 
-                <p class="text-gray-300 text-sm mb-2">Tipo: ${fatality.tipo || 'N/A'}</p> <p class="text-gray-300 text-sm mb-2">Brutalidade: ${fatality.brutalidade || 'N/A'}</p> <p class="text-gray-300 text-sm">Origem: ${fatality.origem || 'N/A'}</p> 
-            `;
-            fatalitiesLista.appendChild(card);
-        });
+            const card = document.createElement('div');
+            card.className = 'bg-gray-800 rounded-lg p-4 shadow-lg border border-red-700 w-3/3';
+            card.innerHTML = `
+                <h3 class="text-xl font-bold blood-text mb-2">${fatality.nome || 'N/A'}</h3> 
+                ${fatality.personagem_responsavel ? `<p class="text-gray-300 text-sm mb-1">Responsável: ${fatality.personagem_responsavel}</p>` : ''} <p class="text-gray-300 text-sm mb-1">Tipo: ${fatality.tipo || 'N/A'}</p> 
+                <p class="text-gray-300 text-sm mb-1">Brutalidade: ${fatality.brutalidade || 'N/A'}</p> 
+                <p class="text-gray-300 text-sm">Origem: ${fatality.origem || 'N/A'}</p> 
+            `;
+            fatalitiesLista.appendChild(card);
+        });
 
         currentOffsetFatalities += fatalities.length;
 
@@ -426,10 +439,10 @@ async function carregarArmas(isInitialLoad) {
 
         armas.forEach(arma => {
             const card = document.createElement('div');
-            card.className = 'bg-gray-800 rounded-lg p-4 shadow-lg border border-yellow-500 w-5/7'; 
+            card.className = 'bg-gray-800 rounded-lg p-4 shadow-lg border border-yellow-500 w-3/3';
             card.innerHTML = `
                 <h3 class="text-xl font-bold text-yellow-400 mb-2">${arma.nome || 'N/A'}</h3>
-                <p class="text-gray-300 text-sm mb-1">Tipo: ${arma.tipo || 'N/A'}</p>
+                ${arma.personagem_responsavel ? `<p class="text-gray-300 text-sm mb-1">Portador: ${arma.personagem_responsavel}</p>` : ''} <p class="text-gray-300 text-sm mb-1">Tipo: ${arma.tipo || 'N/A'}</p>
                 <p class="text-gray-300 text-sm mb-1">Raridade: ${arma.raridade || 'N/A'}</p>
                 <p class="text-gray-300 text-sm mb-1">Alcance: ${arma.alcance || 'N/A'}</p>
                 <p class="text-gray-300 text-sm">Dano: ${arma.dano || 'N/A'}</p>
