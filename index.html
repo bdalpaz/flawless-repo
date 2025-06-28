@@ -1,7 +1,317 @@
 <!DOCTYPE html>
-<html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mortal Kombat - Portal dos Guerreiros</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@400;700&display=swap');
+        
+        body {
+            font-family: 'Oswald', sans-serif;
+            background-color: #0a0a0a;
+            color: #e0e0e0;
+            overflow-x: hidden;
+        }
+
+        .blood-text {
+            text-shadow: 2px 2px 0px #8a0303, 4px 4px 0px #5a0101;
+        }
+        
+        .character-card {
+            transition: all 0.3s ease;
+            transform-style: preserve-3d;
+        }
+        
+        .character-card:hover {
+            transform: translateY(-10px) scale(1.03);
+            box-shadow: 0 10px 20px rgba(255, 0, 0, 0.3);
+        }
+        
+        .fatalities-bg {
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7));
+            background-size:auto;
+            background-position: center;
+        }
+        
+        .mk-logo {
+            filter: drop-shadow(0 0 10px rgba(0, 0, 0, 0.7));
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+
+        /* Estilos para o Modal */
+        .modal {
+            background-color: rgba(0, 0, 0, 0.7); /* Fundo escuro semi-transparente */
+            backdrop-filter: blur(5px); /* Efeito de desfoque */
+        }
+    </style>
+</head>
 <body>
-<h1>Hello World</h1>
-<p>I'm hosted with GitHub Pages.</p>
+    <header class="bg-black border-b-4 sticky top-0 z-50">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center">
+                <img src="assets/images/logo/logomenor.png" 
+                    alt="Mortal Kombat Logo" class="h-12 mk-logo">
+            </div>
+            <nav class="hidden md:flex space-x-6">
+                <a href="#historia" class="text-red-400 hover:text-red-600 transition">História</a>
+                <a href="#personagens" class="text-red-400 hover:text-red-600 transition">Personagens</a>
+                <a href="#jogos" class="text-red-400 hover:text-red-600 transition">Jogos</a>
+                <a href="#fatalities" class="text-red-400 hover:text-red-600 transition">Fatalities</a> 
+                <a href="#armas" class="text-red-400 hover:text-red-600 transition">Armas</a> 
+                <a href="#curiosidades" class="text-red-400 hover:text-red-600 transition">Curiosidades</a>
+            </nav>
+            <button class="md:hidden text-red-500 text-2xl">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </header>
+
+    <section class="relative h-screen flex items-center justify-center overflow-hidden">
+        <div class="absolute inset-0 bg-black opacity-60 z-10"></div>
+        <video autoplay muted loop class="absolute w-full h-full object-cover">
+            <source src="https://assets.mixkit.co/videos/preview/mixkit-close-up-of-a-man-doing-martial-arts-43775-large.mp4" type="video/mp4">
+        </video>
+        <div class="relative z-20 text-center px-4">
+            <h1 class="text-5xl md:text-7xl font-bold text-red-600 blood-text mb-6">MORTAL KOMBAT</h1>
+            <p class="text-xl md:text-2xl text-white max-w-3xl mx-auto mb-8">
+                A franquia de jogos de luta mais brutal e icônica de todos os tempos
+            </p>
+            <a href="#historia" class="bg-red-700 hover:bg-red-800 text-white px-8 py-3 rounded-full text-lg font-bold transition transform hover:scale-105">
+                DESCUBRA A HISTÓRIA <i class="fas fa-chevron-down ml-2"></i>
+            </a>
+        </div>
+    </section>
+
+   <section id="historia" class="py-16 bg-gray-900">
+    <div class="container mx-auto px-4">
+        <h2 class="text-4xl font-bold text-center text-red-600 blood-text mb-12">A HISTÓRIA DE MORTAL KOMBAT</h2>
+        
+        <div class="grid md:grid-cols-2 gap-8 items-center mb-12">
+            <div>
+                <h3 class="text-2xl font-bold text-red-500 mb-4">O Início: Arcade e Violência (1992-1995)</h3>
+                <p class="text-lg mb-4">
+                    Em 1992, Ed Boon e John Tobias lançaram Mortal Kombat nos arcades, chocando o mundo dos videogames. Sua digitalização de atores reais e, principalmente, os famosos 'Fatalities', o transformaram em um fenômeno. O sucesso levou a continuações rápidas como MKII e MK3, que expandiram o universo e a jogabilidade, mas também geraram controvérsia e a criação do sistema de classificação ESRB.
+                </p>
+                <p class="text-lg">
+                    Essa era dourada estabeleceu personagens icônicos como Scorpion, Sub-Zero, Liu Kang e Raiden, e consolidou a série como sinônimo de brutalidade e inovação.
+                </p>
+            </div>
+            <div class="flex justify-center">
+                <img src="assets/images/historia/arcadec.webp" 
+                    alt="Mortal Kombat 1 Arcade e Personagens Clássicos" class="rounded-lg shadow-xl border-2 border-red-700 max-h-80 w-full object-cover">
+            </div>
+        </div>
+        
+        <div class="grid md:grid-cols-2 gap-8 items-center mt-8 md:flex-row-reverse">
+            <div class="order-1 md:order-2">
+                <h3 class="text-2xl font-bold text-red-500 mb-4">A Era 3D: Inovação e Expansão (2002-2008)</h3>
+                <p class="text-lg mb-4">
+                    Após um período de transição, Mortal Kombat renasceu no universo 3D com títulos como Deadly Alliance e Deception. Essa fase introduziu estilos de luta múltiplos e a exploração de reinos como o Outworld e o Netherrealm, aprofundando a mitologia da série.
+                </p>
+                <p class="text-lg">
+                    Apesar de mudanças significativas na jogabilidade, a essência brutal e a narrativa complexa de Mortal Kombat se mantiveram, atraindo uma nova geração de fãs e consolidando seu lugar na história dos jogos de luta.
+                </p>
+            </div>
+            <div class="flex justify-center order-2 md:order-1">
+                <img src="assets/images/historia/inovacao.png" 
+                    alt="Capa de Mortal Kombat Deadly Alliance" class="rounded-lg shadow-xl border-2 border-red-700 max-h-80 w-full object-cover">
+            </div>
+        </div>
+
+        </div>
+</section>
+
+    <section id="personagens" class="py-16 bg-black">
+        <div class="container mx-auto px-4">
+            <h2 class="text-4xl font-bold text-center text-red-600 blood-text mb-12">PERSONAGENS ICÔNICOS</h2>
+            
+            <div id="characters"> 
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+                    <p class="col-span-full text-center text-gray-400">Carregando Kombatants...</p>
+                </div>
+            </div>
+            
+            <div class="text-center mt-12">
+                <button id="showMoreChars" class="bg-red-700 hover:bg-red-800 text-white px-6 py-2 rounded-full font-bold transition">
+                    MOSTRAR MAIS PERSONAGENS <i class="fas fa-chevron-down ml-2"></i>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <section id="jogos" class="py-16 fatalities-bg">
+        <div class="container mx-auto px-4">
+            <h2 class="text-4xl font-bold text-center text-red-600 blood-text mb-12">A EVOLUÇÃO DOS JOGOS</h2>
+            
+            <div id="games">
+                <div class="bg-black bg-opacity-80 p-8 rounded-lg max-w-4xl mx-auto space-y-12">
+                    <p class="text-center text-gray-400">Carregando Linha do Tempo...</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+<section id="fatalities" class="py-16 bg-black">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center text-red-600 blood-text mb-12">FATALITIES: A ARTE FINAL</h2>
+            
+            <div id="fatalities-lista" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8">
+                <p class="col-span-full text-center text-gray-400">Carregando Fatalities...</p>
+            </div>
+
+            <div class="text-center mt-12">
+                <button id="showMoreFatalities" class="bg-red-700 hover:bg-red-800 text-white px-6 py-2 rounded-full font-bold transition">
+                    MOSTRAR MAIS FATALITIES <i class="fas fa-chevron-down ml-2"></i>
+                </button>
+            </div>
+        </div>
+    </section>
+
+     <section id="armas" class="py-16 bg-gray-900"> <div class="container mx-auto px-4">
+            <h2 class="text-4xl font-bold text-center text-red-600 blood-text mb-12">ARSENAL MORTAL</h2>
+            
+            <div id="armas-lista" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <p class="col-span-full text-center text-gray-400">Carregando Armas...</p>
+            </div>
+
+            <div class="text-center mt-12">
+                <button id="showMoreArmas" class="bg-red-700 hover:bg-red-800 text-white px-6 py-2 rounded-full font-bold transition">
+                    MOSTRAR MAIS ARMAS <i class="fas fa-chevron-down ml-2"></i>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    
+   
+   
+    <section id="curiosidades" class="py-16 bg-gray-900">
+        <div class="container mx-auto px-4">
+            <h2 class="text-4xl font-bold text-center text-red-600 blood-text mb-12">CURIOSIDADES</h2>
+            
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="bg-gray-800 p-6 rounded-lg border-l-4 border-red-600">
+                    <div class="text-red-500 text-3xl mb-4">
+                        <i class="fas fa-exclamation-triangle"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-2">Controvérsia</h3>
+                    <p class="text-gray-300">
+                        Mortal Kombat foi um dos principais responsáveis pela criação do sistema de classificação ESRB devido à sua violência explícita.
+                    </p>
+                </div>
+                
+                <div class="bg-gray-800 p-6 rounded-lg border-l-4 border-yellow-400">
+                    <div class="text-yellow-400 text-3xl mb-4">
+                        <i class="fas fa-film"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-2">Filmes</h3>
+                    <p class="text-gray-300">
+                        A franquia inspirou dois filmes live-action (1995 e 2021), séries animadas e uma websérie chamada Mortal Kombat: Legacy.
+                    </p>
+                </div>
+                
+                <div class="bg-gray-800 p-6 rounded-lg border-l-4 border-blue-400">
+                    <div class="text-blue-400 text-3xl mb-4">
+                        <i class="fas fa-gamepad"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-2">Tecnologia</h3>
+                    <p class="text-gray-300">
+                        Os primeiros jogos usavam atores reais digitalizados (motion capture primitiva), dando um visual único aos personagens.
+                    </p>
+                </div>
+                
+                <div class="bg-gray-800 p-6 rounded-lg border-l-4 border-green-400">
+                    <div class="text-green-400 text-3xl mb-4">
+                        <i class="fas fa-trophy"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-2">Competitivo</h3>
+                    <p class="text-gray-300">
+                        Mortal Kombat tem uma cena competitiva ativa, com torneios como o EVO mostrando jogadores profissionais em ação.
+                    </p>
+                </div>
+                
+                <div class="bg-gray-800 p-6 rounded-lg border-l-4 border-purple-400">
+                    <div class="text-purple-400 text-3xl mb-4">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-2">Personagens Secretos</h3>
+                    <p class="text-gray-300">
+                        A série é conhecida por seus personagens secretos como Reptile (o primeiro), Smoke e Noob Saibot (nome dos criadores ao contrário).
+                    </p>
+                </div>
+                
+                <div class="bg-gray-800 p-6 rounded-lg border-l-4 border-pink-400">
+                    <div class="text-pink-400 text-3xl mb-4">
+                        <i class="fas fa-chess"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-2">Crossovers</h3>
+                    <p class="text-gray-300">
+                        Personagens de outras franquias como Freddy Krueger, Jason Voorhees, Alien e Predador já apareceram em jogos de MK.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-black py-8 border-t-8 border-red-800">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-6 md:mb-0">
+                    <img src="assets/images/logo/logo.png" 
+                        alt="Mortal Kombat Logo" class="h-10">
+                </div>
+                <div class="text-left md:text-left text-1xl font-awesome">
+                    <p class="text-red-800 mb-4 text-left">
+                        Alice Botton Dal Paz & Pauline Antônia Pavan
+                    </p>
+                    <p class="text-white-500 text-center font-bold">
+                        Trabalho final de Banco de Dados I
+                    </p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- <div class="fixed bottom-6 right-6">
+        <a href="#" class="bg-red-700 text-white w-12 h-12 rounded-full flex items-center justify-center text-xl shadow-lg transform hover:scale-110 transition pulse">
+            <i class="fas fa-arrow-up"></i>
+        </a>
+    </div> -->
+
+    <div id="characterModal" class="modal fixed inset-0 hidden flex items-center justify-center z-50 p-4">
+        <div class="bg-gray-900 border-2 border-red-700 rounded-lg shadow-xl p-8 max-w-2xl w-full relative transform transition-all duration-300 scale-95 opacity-0 modal-content">
+            <button id="closeModal" class="absolute top-4 right-4 text-red-500 hover:text-red-700 text-3xl font-bold">&times;</button>
+            <div class="md:flex items-center">
+                <div class="md:w-1/3 flex justify-center mb-6 md:mb-0">
+                    <img id="modalCharacterImage" src="" alt="Imagem do Personagem" class="w-48 h-auto rounded-lg border-2 border-gray-700 shadow-lg">
+                </div>
+                <div class="md:w-2/3 md:pl-8">
+                    <h2 id="modalCharacterName" class="text-4xl font-bold blood-text mb-4"></h2>
+                    <p id="modalCharacterBio" class="text-gray-300 text-lg mb-4"></p>
+                    
+                    <h3 class="text-xl font-bold text-red-500 mb-2">Habilidades:</h3>
+                    <ul id="modalCharacterMoves" class="list-none text-gray-400 space-y-1 pl-0">
+                        </ul>
+
+                    <h3 class="text-xl font-bold text-red-500 mt-6 mb-2">Fatality:</h3>
+                    <p id="modalCharacterFatality" class="text-gray-300"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script> 
 </body>
 </html>
